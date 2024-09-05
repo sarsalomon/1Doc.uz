@@ -1,0 +1,258 @@
+{
+  "Admin": {
+      "pageTitle": "Admin dialog"
+  },
+  "User": {
+      "PageTitle": "User Dialog",
+      "Balance": "Balance:",
+      "Pay_button": "Top Up",
+      "Theme_change": "Change Colors",
+      "Update_content": "Update Data",
+      "FileUploads": "Upload File Here",
+      "FileUpload": "Upload File Here",
+      "Create_button": "Create",
+      "Ambulance_text": "Provide Medical Services",
+      "Service_text": "Paid Educational Services",
+      "Delevery_text": "Product Delivery",
+      "Work_text": "Job Placement Abroad",
+      "Search_text": "Search",
+      "Exit": "Log Out",
+      "Account": {
+          "PageTitle": "Update Data",
+          "SubTitle": "Update is only possible once, so please be careful",
+          "UpdateButton": "Refresh",
+          "Subject": {
+              "Title": "Personal Information",
+              "Name": "Company Name",
+              "Surname": "Tax Identification Number (TIN",
+              "Date": "Company Address",
+              "Passport": "Passport Series of the Company Director",
+              "Phone": "Company Phone Number"
+          },
+          "Object": {
+              "Title": "Company Data",
+              "CompanyName": "Company Name",
+              "CompanySTIR": "Tax Identification Number (TIN",
+              "CompanyAddress": "Company Address",
+              "CompanyPhone": "Company Phone Number"
+          }
+      },
+      "Contract": {
+          "Title": "Contracts",
+          "Component": {
+              "PageTitle": "Create Contract",
+              "SelectContract": "Select Contract"
+          }
+      },
+      "Application": {
+          "Title": "Applications",
+          "Component": {
+              "PageTitle": "Create Application",
+              "SelectContract": "Select Application"
+          }
+      },
+      "Appeal": {
+          "Title": "Inquiries"
+      },
+      "Document": {
+          "Title": "Other Documents"
+      },
+      "Signature": {
+          "Title": "For Signature",
+          "Count_wrapper": "Number of Signatories"
+      },
+      "Sms": {
+          "Title": "SMS Notification",
+          "Number_wrapper": "Enter Recipient Number.",
+          "Message_textarea": "Enter Text Here",
+          "Send_button": "Send"
+      },
+      "Mail": {
+          "Title": "Corporate Email"
+      },
+      "AI": {
+          "Title": "AI Lawyer"
+      },
+      "OCR": {
+          "Title": "OCR Editor",
+          "Convert_button": "Convert to Text",
+          "Copy_text": "Copy",
+          "Save_as_file": "Download as Word"
+      },
+      "Locker": {
+          "Title": "Lock Document",
+          "PageTitle": "Lock Documents Online",
+          "Text_two": "Enter Password to Lock File",
+          "Password_number_input": "Enter Password",
+          "RePassword_number_input": "Re-enter Password",
+          "Block_button": "Locking",
+          "Phone_number_input": "Phone Number",
+          "Share_button": "Submit"
+      },
+      "PdfEditor": {
+          "Title": "PDF tahrirlash"
+      },
+      "Tahrirchi": {
+          "Title": "Imlo xato"
+      },
+      "OneNote": {
+          "Title": "One Bildirgi"
+      }
+  },
+  "General": {
+      "Home": {
+          "Navbar": {
+              "Login": "Login",
+              "Demo_button": "Sign up",
+              "Tariffs": "Pricing"
+          },
+          "Header": {
+              "text_two": "Legal Clarity: Simplified Docs, Rapid Signatures!",
+              "Header_description": "Easy, Legit, Wallet-friendly!"
+          },
+          "Tabs": {
+              "Contract": "Contracts",
+              "Contract_text_one": "Create any contracts on your own",
+              "Contract_text_two": "Use contract templates designed for over 100 fields and areas",
+              "Contract_text_three": "Enter the required information",
+              "Contract_text_four": "Specify the signers, send the link to the contract, and sign it in a convenient way",
+              "Application": "Applications",
+              "Application_text_one": "Submit Official Applications to Any Organization",
+              "Application_text_two": "Utilize templates tailored to the requirements and regulations of over 50 organizations, ministries, and committees",
+              "Application_text_three": "Enter the necessary information",
+              "Application_text_four": "Choose and apply one of the convenient types of electronic signature. ",
+              "Document": "Corporate Documents",
+              "Document_text_one": "Create Esential Documents Digitally for Your Organization",
+              "Document_text_two": "Generate permissions, powers of attorney, protocols, orders, acts, and other critical documents with ease",
+              "Document_text_three": "Simply input the required information",
+              "Document_text_four": "Designate signatories, share document links, and sign conveniently using your preferred method",
+              "Appeal": "Inquiries",
+              "Appeal_text_one": "Efficiently Handle Inquiries from Clients, Employees, and Partners ",
+              "Appeal_text_two": "Streamlined Request Management: Utilize customized templates to swiftly address inquiries and ensure prompt responses.",
+              "Appeal_text_three": "Never Miss an Inquiry: Leverage the 'Responses' section to effectively manage and resolve all requests, ensuring no communication goes unanswered",
+              "Signature": "E-Signature",
+              "Signature_text_one": "Ensure Seamless Business Operations with Quick Document Signing ",
+              "Signature_text_two": "Stay on top of your business, even while traveling. Access all your essential documents anytime, anywhere",
+              "Signature_text_three": "Simply upload your document in Word or PDF format, specify the signer, and streamline your workflow effortlessly",
+              "Sms": "SMS Notification",
+              "Sms_text_one": "Effortless Legal Communication  ",
+              "Sms_text_two": "Deliver warning letters and other important legal documents in PDF format through short codes for quick and efficient communication",
+              "OCR": "OCR Editor",
+              "OCR_text_one": "Transform Photos into Text with OCR Technology (Optical Character Recognition)",
+              "OCR_text_two": "Effortlessly edit, copy, or download your text in Word format",
+              "AI": "AI Lawyer",
+              "AI_text_one": "OYour Virtual Lawyer is Always Ready to Assist!  ",
+              "AI_text_two": "Our AI lawyer delivers professional answers to questions in accordance with the laws of Uzbekistan"
+          },
+          "Info": {
+              "Info_content": "According to analytical data on the national labor market, the average salary for lawyers in Tashkent is 8.5 million sums. The market also features job vacancies with salaries ranging from a minimum of 4 million to a maximum of 33 9million sums. To fully support the operations of a legal team consisting of two lawyers—who will be responsible for tasks such as document preparation, copying, mailing services, and other administrative duties—an additional budget of 1,250,000 sums will be required. "
+          },
+          "Carousel": {
+              "Carousel_one": "MEHMONXONA VA HOTELLAR,  DALA HOVLI VA SANATORIYALAR",
+              "Carousel_one_text": "Qisqa muddatga mehmonlarni joylashtirish va ko'chmas mulkni qisman yoki butunlay mo‘jiza ishonib topshirish bugungi kundagi eng xatarli bizneslardan biri bo'lib qolmoqda. “ZAKS” talabi bekor bo'lgandan keyin, xavf darajasi yanada ortadi. \n Shartnomangizni bir zumda tezkor, oson va qonuniy tasdiqlab mol-mulkingiz va shaxsiy reputatsiyangizni saqlab qoling.",
+              "Carousel_two": "quv yurtlari kasb hunar va ta'lim markazlari.",
+              "Carousel_two_text": "Deyarli barcha ta’lim markazlariga o’quvchilarni o’z vasiylari(ota-onasi yaqin qarindoshi yoki buvi buvasi) olib keladi. Ta’lim markazlarida dastlabki 2 ta dars bepul bo’lganligi sababli shartnomalar ko’p holda voyaga yetmagan o’quvchilar tomonidan berib yuboriladi va shartnomaning huquqiy statusi boshqarilmaydi. \\n 1doc.uz bilan siz shartnomani onlayn istalgan joydan istalgan adresatga(vasiyga) aniq va oson yetkazasiz.",
+              "Carousel_three": "Ta'mirlash tiklash va qurilish ishlari bilan shug'illanuvchi ustalan brigadasi yoki katta qurilish kompaniyalari.",
+              "Carousel_three_text": "Iqtisodiyot tarmoqlari orasida eng ko'p huquqiy nizolar ko'tariladigan sohalardan biri bu qurilishdir. Qurilish hamisha kechikadi, rejalar unutiladi, sifat holati saqlanmaydi, yoki aksincha mijoz tomonidan mahsulotlar ta'minoti o'z vaqtida yetib kelmaydi. Hattoki qilingan ishlar uchun pul ham ola olmay qolishingiz mumkin. \n 1doc.uz - sizga qurilish sohasi uchun kerakli barcha hujjatlar to'plami yoki, obyektingiz uchun maxsus shartnoma berishga tayyor.",
+              "Carousel_four": "Bo'lib to'lash va mukromoliya tashkilotlari, lambard va kredit byurolari.",
+              "Carousel_four_text": "Siz qimmatbaho buyumingizni mijozga bo'lib to'lashga ishonib topshirmoqdasiz. Mijozning tolov majburiyatini ifodalash, xavf-xatarni jilovlash uchun maksimal himoyalangan shartnomalar taqdim eting. \n Qonuniy ravishda adresat bilan shartnomalar imzolang. Yetkazib berish xatlari va yo'l xatlarini yoqimli bonus sifatida qabul qilib oling."
+          },
+          "Statistics": {
+              "Statistics_title": "Create and verify any documents with the utmost comfort and ease ",
+              "Statistics_title_one": "Total users ",
+              "Statistics_title_two": "Document templates Available on  the pltform",
+              "Statistics_title_three": "Number of documents created on the platform"
+          },
+          "Signing": {
+              "Signing_title": "Signing Methods ",
+              "Signing_title_one": "Faximile",
+              "Signing_title_two": "SMS",
+              "Signing_title_three": "Telegram",
+              "Signing_title_four": "Face ID",
+              "Signing_title_five": "E-IMZO"
+          },
+          "Corparations": {
+              "Corparations_title": "With Us"
+          },
+          "Price": {
+              "Price_title": "Select your plan",
+              "Price_month": "Month",
+              "Price_select": "Select",
+              "Price_one": {
+                  "Price_one_title": "START ",
+                  "Price_one_content_one": "Get 50 Documents",
+                  "Price_one_content_two": "Send 50 SMS notifications "
+              },
+              "Price_two": {
+                  "Price_two_title": "BUSINESS",
+                  "Price_two_content_one": "Get 250 Documents",
+                  "Price_two_content_two": "Send 250 SMS notifications"
+              },
+              "Price_three": {
+                  "Price_three_title": "SENATE ",
+                  "Price_three_content_one": "Get 500 Documents",
+                  "Price_three_content_two": "Send 500 SMS notifications"
+              },
+              "Price_four": {
+                  "Price_four_title": "PRESIDENT",
+                  "Price_four_content_one": "Get 1000 Documents",
+                  "Price_four_content_two": "Send 1000 SMS notifications"
+              }
+          },
+          "Banner": {
+              "Banner_title": "One Solution, Endless Possibilities!"
+          },
+          "Footer": {
+              "Column_one": {
+                  "Column_one_title": "About us ",
+                  "Column_one_text_one": "Data Privacy Policy ",
+                  "Column_one_text_two": "Public offer",
+                  "Column_one_text_three": "Management "
+              },
+              "Column_two": {
+                  "Column_two_title": "Basis of legality ",
+                  "Column_two_text_one": "Law of the Republic of Uzbekistan On 'Electronic Commerce'",
+                  "Column_two_text_two": "Law of the Republic of Uzbekistan 'On Electronic Signature.'",
+                  "Column_two_text_three": "Resolution on «Measures to Create a Favorable Environment for the Adoption of Digital Technologies by Entrepreneurs through International Platforms.»",
+                  "Column_two_text_four": "“Law 'On Appeals of Individuals and Legal Entities'"
+              },
+              "Column_three": {
+                  "Column_three_title": "Contact"
+              }
+          }
+      },
+      "Error": {
+          "authError": "Incorrect login"
+      },
+      "Auth": {
+          "Registration": {
+              "PageTitle": "Register",
+              "Name_error": "Enter your first name",
+              "Surname_error": "Enter your last name",
+              "Phone_error": "Enter your phone number",
+              "Password_error": "Enter password",
+              "Whois_error": "Log in",
+              "UserExitingError": "User already exists",
+              "RePasswordError": "Please enter the password correctly"
+          },
+          "pageTitle": "Log in",
+          "notRegister": "Don’t have an account?",
+          "register": "Register",
+          "phone": "Phone number",
+          "phonePlaceholder": "Enter phone number +998",
+          "password": "Password",
+          "passwordPlaceholder": "Enter password",
+          "remember": "Remember me",
+          "forget": "Forgot your password?",
+          "button": "Sign In",
+          "UserNotFoundError": "User not found",
+          "UserPasswordError": "Invalid username or password",
+          "UserExitingError": "This user already exists"
+      },
+      "NotFound": {
+          "pageTitle": "Page not found",
+          "title": "Sorry, the page you were looking for could not be found",
+          "button": "Return to homepage"
+      }
+  }
+}
