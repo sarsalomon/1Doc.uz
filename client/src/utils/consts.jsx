@@ -8,6 +8,8 @@ export const SERVICEACCEPTABLEPOLICY_ROUTE     = '/serviceAcceptablePolicy';
 export const CONTRACT_VIEW_ROUTE               = '/contractview';
 export const APPEAL_VIEW_ROUTE                 = '/appealview';
 export const SIGNATURE_VIEW_ROUTE              = '/signatureview';
+export const APPLICATION_VIEW_ROUTE            = '/applicationview';
+export const DOCUMENT_VIEW_ROUTE               = '/documentview';
 
 export const APPEAL_SEND_ROUTE                 = '/appeal';
 

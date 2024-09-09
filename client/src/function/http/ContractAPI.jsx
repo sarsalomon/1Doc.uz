@@ -5,6 +5,11 @@ export const fetchDataContract = async () =>{
     return data
 }
 
+export const fetchDatasContractById = async (id) =>{
+    const { data } = await $authHost.post('api/contract/fetchbyid/', { id });
+    return data
+}
+
 export const addDataContract = async (datas) =>{
     const { data } = await $authHost.post('api/contract/add', datas);
     return data
@@ -12,11 +17,6 @@ export const addDataContract = async (datas) =>{
 
 export const getDataContract = async (id) =>{
     const { data } = await $authHost.get('api/contract/get/' + id);
-    return data
-}
-
-export const getDatasContractById = async (id) =>{
-    const { data } = await $authHost.post('api/contract/fetchbyid/', { id });
     return data
 }
 

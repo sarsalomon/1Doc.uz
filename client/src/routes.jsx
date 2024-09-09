@@ -1,8 +1,9 @@
 import {
     ADMIN_DASHBOARD_ROUTE,
-    APPEAL_SEND_ROUTE,
     APPEAL_VIEW_ROUTE,
+    APPLICATION_VIEW_ROUTE,
     CONTRACT_VIEW_ROUTE,
+    DOCUMENT_VIEW_ROUTE,
     HOME_ROUTE,
     PRIVACYPOLICY_ROUTE,
     REGISTRATION_ROUTE,
@@ -23,14 +24,12 @@ import UserDashboard from "./pages/user/UserDashboard";
 import UserContractView from "./pages/user/view/ContractView";
 import AccountView from "./pages/user/view/AccountView";
 import PayView from "./pages/user/view/PayView";
-import Contract from "./pages/user/add/Contract";
 import ContractView from "./pages/site/ContractView";
 import OCR from "./pages/user/view/OCR";
 import HomeAppeal from "./pages/site/Appeal";
-import HomePrivacypolicy from "./pages/site/Privacypolicy";
-import HomeTermofuse from "./pages/site/Termofuse";
-import HomeServiceAcceptablePolicy from "./pages/site/ServiceAcceptablePolicy";
 import SignatureView from "./pages/site/SignatureView";
+import ApplicationView from "./pages/site/ApplicationView";
+import DocumentView from "./pages/site/DocumentView";
 
 export const authRoutes = [
     {
@@ -52,10 +51,6 @@ export const authRoutes = [
     {
         path: USER_DASHBOARD_CONTRACT_ROUTE,
         Component: UserContractView,
-    },
-    {
-        path: USER_DASHBOARD_CONTRACT_ADD_ROUTE,
-        Component: Contract,
     },
     {
         path: USER_DASHBOARD_ACCOUNT_ROUTE,
@@ -81,6 +76,14 @@ export const authRoutes = [
         path: SIGNATURE_VIEW_ROUTE + "/:id",
         Component: SignatureView,
     },
+    {
+        path: APPLICATION_VIEW_ROUTE + "/:id",
+        Component: ApplicationView,
+    },
+    {
+        path: DOCUMENT_VIEW_ROUTE + "/:id",
+        Component: DocumentView,
+    },
 ];
 
 export const publicRoutes = [
@@ -91,21 +94,6 @@ export const publicRoutes = [
     {
         path: REGISTRATION_ROUTE,
         Component: Auth,
-    },
-    ,
-    {
-        path: PRIVACYPOLICY_ROUTE,
-        Component: HomePrivacypolicy,
-    },
-    ,
-    {
-        path: TERMOFUSE_ROUTE,
-        Component: HomeTermofuse,
-    },
-    ,
-    {
-        path: SERVICEACCEPTABLEPOLICY_ROUTE,
-        Component: HomeServiceAcceptablePolicy,
     },
     {
         path: CONTRACT_VIEW_ROUTE + "/:id",
@@ -118,5 +106,13 @@ export const publicRoutes = [
     {
         path: SIGNATURE_VIEW_ROUTE + "/:id",
         Component: SignatureView,
+    },
+    {
+        path: APPLICATION_VIEW_ROUTE + "/:id",
+        Component: ApplicationView,
+    },
+    {
+        path: DOCUMENT_VIEW_ROUTE + "/:id",
+        Component: DocumentView,
     },
 ];

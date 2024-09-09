@@ -4,7 +4,6 @@ import { RiFileExcel2Line } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
 import QRCode from "qrcode";
-import { getDatasContractById } from "../../../function/http/ContractAPI";
 import { Context } from "../../../main";
 
 const UserAppealView = observer(() => {
@@ -13,9 +12,7 @@ const UserAppealView = observer(() => {
     const { t } = useTranslation();
 
     useEffect(() => {
-        getDatasContractById(user._user.id).then((data) => {
-            setContracts(data);
-        });
+
     }, []);
 
     const generateQRCode = async (text) => {

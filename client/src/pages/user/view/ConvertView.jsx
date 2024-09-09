@@ -6,41 +6,43 @@ import { Helmet } from "react-helmet-async";
 
 import { Context } from "../../../main";
 import { addDataLocker } from "../../../function/http/LockerAPI";
+import { fileConvert } from "../../../function/http/ConvertAPI";
 
-const UserLockerView = observer(() => {
+const UserConvertView = observer(() => {
     const { user } = useContext(Context);
     const { t } = useTranslation();
 
     const [file, setFile] = useState(null);
-    const [password, setPassword] = useState("");
-    const [rePassword, setRePassword] = useState("");
     const [progress, setProgress] = useState(false);
 
     const selectFile = (e) => {
         setFile(e.target.files[0]);
     };
 
-    const LockFile = async () => {
-        if (file && password && rePassword && password === rePassword && !progress) {
+    const ConvertFile = async () => {
+        if (file && !progress) {
             setProgress(true);
-
-            // Проверка MIME-типа файла
-            const allowedTypes = ["application/pdf"];
+            const allowedTypes = ["application/docx","application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
             if (!allowedTypes.includes(file.type)) {
-                alert("Файл должен быть формата pdf");
+                toast.error(("Файл должен быть формата docx"), {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
                 setProgress(false);
                 return;
             }
 
             const formData = new FormData();
             formData.append("file", file);
-            formData.append("password", password);
 
             try {
-                const data = await addDataLocker(formData);
+                const data = await fileConvert(formData);
                 setFile(null);
-                setPassword("");
-                setRePassword("");
                 window.open(data, "_blank");
             } catch (e) {
                 toast.error(e.response?.data?.message || "An error occurred", {
@@ -72,7 +74,7 @@ const UserLockerView = observer(() => {
     useEffect(() => {
         const keyDownHandler = (event) => {
             if (event.key === "Enter") {
-                LockFile();
+                ConvertFile();
             }
         };
 
@@ -81,33 +83,33 @@ const UserLockerView = observer(() => {
         return () => {
             document.removeEventListener("keydown", keyDownHandler);
         };
-    }, [LockFile]);
+    }, [ConvertFile]);
 
     return (
         <>
             <Helmet>
-                <title>{t("User:Locker:Title")}</title>
+                <title>{t("User:Translater:Title")}</title>
             </Helmet>
             <div className="locker-container locker-page">
-                <h3 className="locker-title">{t("User:Locker:PageTitle")}</h3>
+                <h3 className="locker-title">{t("User:Translater:PageTitle")}</h3>
 
                 <button className="upload-btn btn btn-outline-primary">
-                    {t("User:FileUploads")} (.pdf)
-                    <input type="file" onChange={selectFile}  accept=".pdf" />
+                    {t("User:FileUploads")} (.docx)
+                    <input type="file" onChange={selectFile} accept=".docx" />
                 </button>
 
                 <div className="locker-form-container">
-                    <h5 className="locker-form-label">{t("User:Locker:Text_two")}</h5>
-
-                    <input className="locker-input" type="password" placeholder={t("User:Locker:Password_number_input")} value={password} onChange={(e) => setPassword(e.target.value)} />
-                    <input className="locker-input" type="password" placeholder={t("User:Locker:RePassword_number_input")} value={rePassword} onChange={(e) => setRePassword(e.target.value)} />
                     {progress ? (
                         <button className="locker-btn btn btn-primary" disabled>
-                            Jarayonda
+                            {t("User:Locker:InProgress")}
                         </button>
                     ) : (
-                        <button className="locker-btn btn btn-primary" onClick={LockFile}>
-                            {t("User:Locker:Block_button")}
+                        <button
+                            className="locker-btn btn btn-primary"
+                            onClick={ConvertFile}
+                            disabled={!file}
+                        >
+                            {t("User:Translater:Convert_button")}
                         </button>
                     )}
                 </div>
@@ -117,4 +119,4 @@ const UserLockerView = observer(() => {
     );
 });
 
-export default UserLockerView;
+export default UserConvertView;

@@ -1,232 +1,138 @@
-import { useContext, useEffect, useState } from "react";
+import jsPDF from "jspdf";
+import QRCode from "qrcode";
+import { useState, useEffect } from "react";
+import { Container, Row, Col, Button, Modal, Form } from "react-bootstrap";
+import SignatureCanvas from "react-signature-canvas";
 import { observer } from "mobx-react-lite";
-import { Helmet } from "react-helmet-async";
-import { Container, Row, Col, Form, Card, Button } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { getDataCode, getDataContract, verifyDataCode, verifyDataSignature } from "../../function/http/ContractAPI";
+import { getUser } from "../../function/http/UserApi";
 
-import { getUser } from "../../../../function/http/UserApi";
-import { Context } from "../../../../main";
-import { addDataContract } from "../../../../function/http/ContractAPI";
-import UserContractViewComponent from "../../view/components/ContractViewComponent";
-
-const ContractOne = observer(() => {
-    const { user } = useContext(Context);
+const DocumentView = observer(() => {
+    const { id } = useParams();
+    const [contractData, setContractData] = useState(null);
+    const [code, setCode] = useState("");
+    const [signature, setSignature] = useState(null);
     const [userInfo, setUserInfo] = useState({});
+    const [CodeShow, setCodeShow] = useState(false);
+    const [SignatureShow, setSignatureShow] = useState(false);
 
-    const [objects, setObjects] = useState({
-        where: "",
-        date: "",
-        whois: `${userInfo.name} ${userInfo.surname}`,
-        phone: userInfo.phone,
-    });
-
-    const [subjects, setSubjects] = useState({
-        name: "",
-        title: "",
-        hour: "",
-        date: "",
-        count: "",
-        weekly: "",
-        pay: "",
-        address: "",
-        number: "",
-        type: "",
-    });
+    const CodeModelClose = () => setCodeShow(false);
+    const CodeModelShow = () => setCodeShow(true);
+    const SignatureModelClose = () => setSignatureShow(false);
+    const SignatureModelShow = () => setSignatureShow(true);
 
     useEffect(() => {
-        getUser(user._user.id).then((data) => {
-            setUserInfo(data);
-        });
-    }, [user._user.id]);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setSubjects((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-    };
-
-    const handleChangeObjects = (e) => {
-        const { name, value } = e.target;
-        setObjects((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-    };
-
-    const createContract = async () => {
-        try {
-            let data;
-
-            const formData = new FormData();
-            formData.append("userId", user._user.id);
-            formData.append("title", "pullik sharnoma yaratish tizimi");
-            formData.append("contractTemplateId", "1");
-            formData.append("type", subjects.type);
-            formData.append("object", JSON.stringify(objects));
-            formData.append("subjects", JSON.stringify(subjects));
-
-            data = await addDataContract(formData);
-            if (data._id) {
-                const url = `${import.meta.env.VITE_API_URL_BACKEND}/contractview/${data._id}`;
-
-                window.open(url, "_blank", "noopener,noreferrer");
-
-                window.location.href = window.location.href;
-                toast.success("Yaratildi", {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
-            } else {
-                toast.error("Failed to verify contract. Please check the code and try again.", {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+        async function fetchData() {
+            try {
+                const responseData = await getDataContract(id);
+                setContractData(responseData);
+                getUser(responseData.userId).then((data) => setUserInfo(data));
+            } catch (error) {
+                console.error("Error fetching data:", error);
             }
-        } catch (e) {
-            toast.error(e.response.data.message, {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
         }
+        fetchData();
+    }, [id]);
+
+    const getSmsCode = async () => {
+        try {
+            const formData = new FormData();
+            formData.append("contractId", contractData._id);
+            formData.append("phone", contractData.contractSubject.number);
+
+            const response = await getDataCode(formData);
+            if (response.data === "success") {
+                toast.success("SMS code sent successfully", { position: "bottom-right" });
+            } else {
+                toast.error("Error sending SMS code", { position: "bottom-right" });
+            }
+        } catch (error) {
+            toast.error("SMS service error", { position: "bottom-right" });
+        }
+    };
+
+    const acceptCode = async () => {
+        try {
+            const formData = new FormData();
+            formData.append("contractId", contractData._id);
+            formData.append("code", code);
+            // Add device info here if needed
+
+            const response = await verifyDataCode(formData);
+            if (response.status === "WaitSignature") {
+                toast.success("SMS code verified", { position: "bottom-right" });
+                CodeModelClose();
+                setContractData(response);
+            } else {
+                toast.error("Failed to verify code", { position: "bottom-right" });
+            }
+        } catch (error) {
+            toast.error("Verification failed", { position: "bottom-right" });
+        }
+    };
+
+    const acceptSignature = async () => {
+        try {
+            const formData = new FormData();
+            formData.append("contractId", contractData._id);
+            formData.append("image", signature.toDataURL("image/png"));
+            // Add device info here if needed
+
+            const response = await verifyDataSignature(formData);
+            if (response) {
+                toast.success("Signature accepted", { position: "bottom-right" });
+                SignatureModelClose();
+                setContractData(response);
+            } else {
+                toast.error("Failed to verify signature", { position: "bottom-right" });
+            }
+        } catch (error) {
+            toast.error("Signature verification failed", { position: "bottom-right" });
+        }
+    };
+
+    const generatePDF = async () => {
+        const doc = new jsPDF();
+        const midPage = doc.internal.pageSize.getWidth() / 2;
+
+        doc.setFontSize(25);
+        doc.text("Pullik shartnoma", midPage, 10, null, null, "center");
+        doc.setFontSize(20);
+        doc.text("Shartnoma", midPage, 20, null, null, "center");
+        doc.setFontSize(15);
+        doc.text("Shartnoma raqami - 1", midPage, 30, null, null, "center");
+
+        doc.setFontSize(12);
+        doc.text(contractData.contractObject.where, 80, 40, null, null, "center");
+        doc.text(contractData.contractObject.date, 150, 40, null, null, "center");
+
+        doc.setFontSize(12);
+        const text = `Ustav asosida ish ko‘ruvchi ta'lim markazi direktori %F.I.Oijrochi% keyinchalik «Ijrochi» deb yuritiluvchi, bir tomonidan Ota-ona yoki ularning o‘rnini bosuvchi shaxsning ${contractData.contractSubject.name} nomidan o‘quvchining manfaatlarini ifoda etuvchi keyinchalik «Buyurtmachi» deb yuritiluvchi, ikkinchi tomonidan, mazkur shartnomani quyidagilar to‘g‘risida tuzdilar:`;
+        doc.text(text, 10, 50, { maxWidth: 180 });
+
+        const canvas = await QRCode.toCanvas(`https://1doc.uz/contractview/${contractData._id}`, { width: 200 });
+        doc.addImage(canvas.toDataURL("image/png"), "PNG", 15, 100, 50, 50);
+
+        // Add contract image with improved quality handling
+        const img = new Image();
+        img.src = contractData.image;
+        img.onload = () => {
+            doc.addImage(img, "PNG", 10, 10, 40, 40);
+            doc.save("contract.pdf");
+        };
     };
 
     return (
         <>
             <Helmet>
-                <title>Shartnoma yaratish</title>
+                <title>Shartnoma</title>
                 <meta name="description" content="This is my page description." />
             </Helmet>
             <Container fluid>
-                <Row className="mx-2">
-                    <Col xxl={4} xl={4} lg={4} md={4} sm={4}>
-                        <div>
-                            <Card>
-                                <Card.Title>Ijrochini ma'lumotlari</Card.Title>
-                                <Card.Body>
-                                    <Form>
-                                        <Row>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="where">
-                                                    <Form.Label>Tuzilgan joy</Form.Label>
-                                                    <Form.Control type="text" placeholder="Ohangaron shahar" name="where" value={objects.where} onChange={handleChangeObjects} />
-                                                </Form.Group>
-                                            </Col>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="date">
-                                                    <Form.Label>Shartnoma sanasi</Form.Label>
-                                                    <Form.Control type="date" name="date" value={objects.date} onChange={handleChangeObjects} />
-                                                </Form.Group>
-                                            </Col>
-                                        </Row>
-                                    </Form>
-                                </Card.Body>
-                            </Card>
-                            <Card>
-                                <Card.Title>Buyurtchasini ma'lumotlari</Card.Title>
-                                <Card.Body>
-                                    <Form>
-                                        <Row>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="name">
-                                                    <Form.Label>Ota-ona FIO</Form.Label>
-                                                    <Form.Control type="text" placeholder="Tojiboyeva Berigul Aliqulovna" name="name" value={subjects.name} onChange={handleChange} />
-                                                </Form.Group>
-                                            </Col>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="title">
-                                                    <Form.Label>Fan nomi</Form.Label>
-                                                    <Form.Control type="text" placeholder="Ingliz tili" name="title" value={subjects.title} onChange={handleChange} />
-                                                </Form.Group>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="hour">
-                                                    <Form.Label>Oyiga necha soat</Form.Label>
-                                                    <Form.Control type="text" placeholder="12" name="hour" value={subjects.hour} onChange={handleChange} />
-                                                </Form.Group>
-                                            </Col>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="date">
-                                                    <Form.Label>Qaysi sana</Form.Label>
-                                                    <Form.Control type="date" name="date" value={subjects.date} onChange={handleChange} />
-                                                </Form.Group>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="count">
-                                                    <Form.Label>Xaftalik</Form.Label>
-                                                    <Form.Control type="text" placeholder="12" name="count" value={subjects.count} onChange={handleChange} />
-                                                </Form.Group>
-                                            </Col>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="weekly">
-                                                    <Form.Label>Xaftalik</Form.Label>
-                                                    <Form.Control type="text" placeholder="12" name="weekly" value={subjects.weekly} onChange={handleChange} />
-                                                </Form.Group>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="pay">
-                                                    <Form.Label>Oylik to'lov</Form.Label>
-                                                    <Form.Control type="text" placeholder="400 000" name="pay" value={subjects.pay} onChange={handleChange} />
-                                                </Form.Group>
-                                            </Col>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="address">
-                                                    <Form.Label>Manzil</Form.Label>
-                                                    <Form.Control type="text" placeholder="Ohangaron shahar 4 daxa 3 xonodon" name="address" value={subjects.address} onChange={handleChange} />
-                                                </Form.Group>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col>
-                                                <Form.Group className="mb-3" controlId="number">
-                                                    <Form.Label>Telefon raqam</Form.Label>
-                                                    <Form.Control type="text" placeholder="93 178 57 89" name="number" value={subjects.number} onChange={handleChange} />
-                                                </Form.Group>
-                                            </Col>
-                                            <Col>
-                                                <Form.Label>MFY ligi</Form.Label>
-
-                                                <Form.Select name="type" value={subjects.type} onChange={handleChange}>
-                                                    <option value={""}>Tasdiqlash turi</option>
-
-                                                    <option value="1">SmS</option>
-                                                    <option value="2">SMS + IMZO</option>
-                                                    {/* <option value="3">SMS + YUZ</option> */}
-                                                </Form.Select>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Button onClick={createContract}>Yaratish</Button>
-                                        </Row>
-                                    </Form>
-                                </Card.Body>
-                            </Card>
-                        </div>
-                    </Col>
-                    <Col xxl={8} xl={8} lg={8} md={8} sm={8}>
+                <Row>
+                    <Col>
                         <div className="BackgroundPage">
                             <div className="Page">
                                 <div>
@@ -246,14 +152,14 @@ const ContractOne = observer(() => {
                                 <div>&nbsp;</div>
                                 <div>
                                     <div className="d-flex justify-content-between align-items-center">
-                                        <span>{objects.where}</span>
-                                        <span>{objects.date}</span>
+                                        <span>{contractObject.where}</span>
+                                        <span>{contractObject.date}</span>
                                     </div>
                                 </div>
                                 <div>&nbsp;</div>
                                 <div>
-                                    &emsp;&emsp;Устав асосида иш кўрувчи таълим маркази директори %Ф.И.Оижрочи% кейинчалик «Ижрочи» деб юритилувчи, бир томонидан Ота-она ёки уларнинг ўрнини босувчи шахснинг <b>{subjects.name}</b> номидан
-                                    ўқувчининг манфаатларини ифода этувчи кейинчалик «Буюртмачи» деб юритилувчи, иккинчи томонидан, мазкур шартномани қуйидагилар тўғрисида туздилар:
+                                    &emsp;&emsp;Устав асосида иш кўрувчи таълим маркази директори %Ф.И.Оижрочи% кейинчалик «Ижрочи» деб юритилувчи, бир томонидан Ота-она ёки уларнинг ўрнини босувчи шахснинг <b>{contractSubject.name}</b>{" "}
+                                    номидан ўқувчининг манфаатларини ифода этувчи кейинчалик «Буюртмачи» деб юритилувчи, иккинчи томонидан, мазкур шартномани қуйидагилар тўғрисида туздилар:
                                 </div>
                                 <div>
                                     <span className="d-flex justify-content-center align-items-center">
@@ -261,7 +167,7 @@ const ContractOne = observer(() => {
                                     </span>
                                 </div>
                                 <div>
-                                    &emsp;&emsp;1.1. Ушбу шартнома мазмунига кўра “Ижрочи” <b>{subjects.title}</b> бўйича&nbsp; пуллик таълим хизматларини кўрсатади, “Буюртмачи” кўрсатилган хизматлар учун учун шартнома асосида тўлов
+                                    &emsp;&emsp;1.1. Ушбу шартнома мазмунига кўра “Ижрочи” <b>{contractObject.title}</b> бўйича&nbsp; пуллик таълим хизматларини кўрсатади, “Буюртмачи” кўрсатилган хизматлар учун учун шартнома асосида тўлов
                                     амалиётини амалга оширади, “Ўқувчи” таълим дастурлари асосида берилган материалларни ўзлаштириш мажбуриятини олади .
                                 </div>
                                 <div>
@@ -289,7 +195,8 @@ const ContractOne = observer(() => {
                                 <div>&emsp;&emsp;- Машғулотларда ўқувчига мактабнинг мавжуд ўқув-услубий, ахборот-ресурс ва моддий-техника базасига мувофиқ ўқиш учун барча зарур шарт-шароитларни яратиш;</div>
                                 <div>&emsp;&emsp;Ушбу шартномага асосан ўқувчи пуллик хизматлар асосида қуйидагилар билан таъминланади:</div>
                                 <div>
-                                    &emsp;&emsp;<b>{subjects.hour}</b>&nbsp; соат хажмга&nbsp; мўлжалланган&nbsp; дастур&nbsp; (<b>{subjects.date}</b> да <b>{subjects.count}</b> та дарс , яъни хафтада <b>{subjects.weekly}</b> марта)
+                                    &emsp;&emsp;<b>{contractSubject.hour}</b>&nbsp; соат хажмга&nbsp; мўлжалланган&nbsp; дастур&nbsp; (<b>{contractSubject.date}</b> да <b>{contractSubject.count}</b> та дарс , яъни хафтада{" "}
+                                    <b>{contractSubject.weekly}</b> марта)
                                 </div>
                                 <div>
                                     <b>
@@ -336,7 +243,7 @@ const ContractOne = observer(() => {
                                     </b>
                                 </div>
                                 <div>
-                                    &emsp;&emsp;4.1. Кўрсатилаётган жами қўшимча пуллик хизматлар бир календарь ойи учун <b>{subjects.pay}</b> сўм маблағ миқдорини ташкил этади.
+                                    &emsp;&emsp;4.1. Кўрсатилаётган жами қўшимча пуллик хизматлар бир календарь ойи учун <b>{contractSubject.pay}</b> сўм маблағ миқдорини ташкил этади.
                                 </div>
                                 <div>
                                     &emsp;&emsp;4.2. Тўлов ҳар ойнинг Тўлов санаси санасидан кечикмаган ҳолда, буюртмачи томонидан 100 (юз) фоиз олдиндан амалга оширилади. Тўлов банклар орқали “Ижрочи”нинг тегишли ҳисобварақларига нақд пул
@@ -400,13 +307,17 @@ const ContractOne = observer(() => {
                                         <b>8. ТОМОНЛАРНИНГ МАНЗИЛИ, БАНК РЕКВИЗИТЛАРИ ВА БОШҚА МАЪЛУМОТЛАРИ:</b>
                                     </span>
                                 </div>
-                                <div className="d-flex justify-content-between align-items-center">
+                                <div className="d-flex justify-content-between ">
                                     <div>
                                         <div>«Ижрочи»</div>
                                         <div>
-                                            {userInfo.name} {userInfo.surname}
+                                            <b>{userInfo.name}</b> <b>{userInfo.surname}</b>
                                         </div>
-                                        <div>{userInfo.phone}</div>
+                                        <div>
+                                            +998 <b>{userInfo.phone}</b>
+                                        </div>
+                                        <br />
+                                        <br />
                                         <div>(имзо) ____________________</div>
                                     </div>
 
@@ -415,13 +326,13 @@ const ContractOne = observer(() => {
                                             <span>«БУЮРТМАЧИ»</span>
                                         </div>
                                         <div>
-                                            F.I.O: <b>{subjects.name}</b>
+                                            F.I.O: <b>{contractSubject.name}</b>
                                         </div>
                                         <div>
-                                            Manzil: <b>{subjects.address}</b>
+                                            Manzil: <b>{contractSubject.address}</b>
                                         </div>
                                         <div>
-                                            +998 <b>{subjects.number}</b>
+                                            +998 <b>{contractSubject.number}</b>
                                         </div>
                                         <div>
                                             <br />
@@ -434,11 +345,84 @@ const ContractOne = observer(() => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* <h2>{contractData?.title}</h2>
+            <p>Status: {contractData?.status}</p>
+            <p>Create Date: {new Date(contractData?.createDate).toLocaleDateString()}</p> */}
+                        {/* Add more contract details as needed */}
                     </Col>
+                    {contractData?.status === "End" ? (
+                        <Col>
+                            <span>Imzolandi</span>
+                            <br />
+                            <span onClick={generatePDF}>Ko'chirib olish PDF</span>
+                        </Col>
+                    ) : (
+                        <Col>
+                            <Card>
+                                <Card.Title>Shartnoma Ma'lumotlari</Card.Title>
+                                <Card.Body>
+                                    <p>Qata tuzildi: {contractObject?.where}</p>
+                                    <p>Qachon: {contractObject?.date}</p>
+                                </Card.Body>
+                            </Card>
+                            <Card>
+                                <Card.Title>Buyurtmachi</Card.Title>
+                                <Card.Body>
+                                    <p>Ismi: {contractSubject?.name}</p>
+                                    {contractData?.status === "Create" ? (
+                                        <Button onClick={CodeModelShow}>SMS orqali Tasdiqlash</Button>
+                                    ) : contractData?.status === "WaitSignature" ? (
+                                        <Button onClick={SignatureModelShow}>Imzo orqali Tasdiqlash</Button>
+                                    ) : (
+                                        "Xatolik"
+                                    )}
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    )}
                 </Row>
             </Container>
+
+            <Modal className="py-4" show={SignatureShow} onHide={SignatureModelClose} backdrop="static" keyboard={false} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Shartnoma tasdiqlash Imzo</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div>
+                        <div style={{ border: "2px solid red" }}>
+                            <SignatureCanvas penColor="black" canvasProps={{ width: 470, height: 200 }} ref={(data) => setSignature(data)} />
+                        </div>
+                        <div className="d-flex justify-content-between mt-2">
+                            <Button onClick={SignatureClear}>Tozlash</Button>
+                            <Button variant="success" onClick={acceptSignature}>
+                                Tasdiqlash
+                            </Button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
+
+            <Modal className="py-4" show={CodeShow} onHide={CodeModelClose} backdrop="static" keyboard={false} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Shartnoma tasdiqlash</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form className="d-flex flex-column">
+                        <span onClick={getSmsCode}>Tasdiqlash uchun kod olish</span>
+                        <InputGroup className="mb-3">
+                            <Form.Control minLength={4} maxLength={4} value={code} onChange={(e) => setCode(e.target.value)} placeholder="Kodni kiriting" />
+                            <Button variant="success" onClick={acceptCode}>
+                                Tasdiqlash
+                            </Button>
+                        </InputGroup>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+
+            <ToastContainer />
         </>
     );
 });
 
-export default ContractOne;
+export default DocumentView;

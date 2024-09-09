@@ -23,7 +23,7 @@ const UserOcrView = observer(() => {
         const selectedFile = e.target.files[0];
         if (!selectedFile) return;
 
-        const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+        const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
         if (!allowedTypes.includes(selectedFile.type)) {
             setLoading(false);
             setError(t("User:InvalidFileType"));
@@ -62,7 +62,9 @@ const UserOcrView = observer(() => {
                 return;
             }
 
-            const { data: { text } } = await Tesseract.recognize(file, ocrLanguage);
+            const {
+                data: { text },
+            } = await Tesseract.recognize(file, ocrLanguage);
             setOcrText(text);
         } catch (err) {
             setError(t("User:OcrError"));

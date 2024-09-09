@@ -1,17 +1,18 @@
-import { Table } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { getDatasContractById } from "../../../function/http/ContractAPI";
+import { deleteDataContract, fetchDatasContractById } from "../../../function/http/ContractAPI";
 import { Context } from "../../../main";
 import { useTranslation } from "react-i18next";
-import { RiFileExcel2Line } from "react-icons/ri";
 import UserContractViewComponent from "./components/ContractViewComponent";
+import { confirmAlert } from "react-confirm-alert";
 
 import { CiSearch } from "react-icons/ci";
 import { MdOutlineSms } from "react-icons/md";
 import { FaFileSignature } from "react-icons/fa";
 import { MdOutlineDoneAll } from "react-icons/md";
+import { RiFileExcel2Line } from "react-icons/ri";
 
 const UserContractView = observer(() => {
   const { user } = useContext(Context);
@@ -20,7 +21,7 @@ const UserContractView = observer(() => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    getDatasContractById(user._user.id).then((data) => {
+    fetchDatasContractById(user._user.id).then((data) => {
       setContracts(data);
     }).catch(error => {
       console.error("Error fetching contracts:", error);
@@ -43,7 +44,7 @@ const UserContractView = observer(() => {
 
   function formatData(contractSubject) {
     if (!contractSubject) {
-      return {}; // Return an empty object if contractSubject is undefined or empty
+      return {}; 
     }
   
     try {
@@ -62,11 +63,62 @@ const UserContractView = observer(() => {
       };
     } catch (error) {
       console.error("Error parsing contractSubject:", error);
-      return {}; // Return an empty object if JSON parsing fails
+      return {};
     }
   }
+
+  const ConfirmDelete = (id) => {
+    confirmAlert({
+        title: "O'chirishni tasdiqlang",
+        message: "Ishonchingiz komilmi o`chirishga?",
+        buttons: [
+            {
+                label: "Ha",
+                onClick: () => DeleteContract(id),
+            },
+            {
+                label: "Yo`q",
+            },
+        ],
+        closeOnEscape: true,
+        closeOnClickOutside: true,
+    });
+};
   
-  console.log(contracts)
+const DeleteContract = async (id) => {
+  try {
+      let data;
+      data = await deleteDataContract(id);
+      if (data) {
+        fetchDatasContractById(user._user.id)
+              .then((data) => {
+                setContracts(data);
+              })
+              .catch((error) => {
+                  console.error("Error fetching signatures:", error);
+              });
+          toast.success(`O'chirildi`, {
+              position: "bottom-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+          });
+      }
+  } catch (e) {
+      toast.error(e.response.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+      });
+  }
+};
 
   return (
     <>
@@ -111,7 +163,7 @@ const UserContractView = observer(() => {
                 </div>
               </div>
             </div>
-            <Table striped bordered hover>
+            <Table striped bordered hover className="mt-4">
               <thead>
                 <tr>
                   <th scope="col" rowSpan="2">№</th>
@@ -119,6 +171,7 @@ const UserContractView = observer(() => {
                   <th scope="col" colSpan="3">Shartnoma</th>
                   <th scope="col" colSpan="2">Imzolangan sanasi</th>
                   <th scope="col" rowSpan="2">Holati</th>
+                  <th scope="col" rowSpan="2">Harakat</th>
                 </tr>
                 <tr>
                   <th scope="col">Yaratilgan sanasi</th>
@@ -129,36 +182,47 @@ const UserContractView = observer(() => {
                 </tr>
               </thead>
               <tbody>
-                {contracts.map((contract, index) => {
-                  const parsedSubject = formatData(contract.contractSubject);
+              {contracts.length === 0 ? (
+                  <tr>
+                    <td colSpan="8">Ma'lumotlar mavjud emas</td>
+                  </tr>
+                ) : (
+                  contracts.map((contract, index) => {
+                    const parsedSubject = formatData(contract.contractSubject);
 
-                  return (
-                    <tr key={contract._id}>
-                      <td>{index + 1}</td>
-                      <td>
-                        <a href={`${import.meta.env.VITE_API_URL_BACKEND}/contractview/${contract._id}`} target="_blank">
-                          {contract.title}
-                        </a>
-                      </td>
-                      <td>{formatDate(contract.createDate)}</td>
-                      <td>{parsedSubject.name}</td>
-                      <td>{parsedSubject.title}</td>
-                      <td>{parsedSubject.date}</td>
-                      <td>{formatDate(contract.updateDate)}</td>
-                      <td>
-                        {contract.status === "Create" ? (
-                          <>Yaratolgan Sms tasdiqlash kutilmoqda <MdOutlineSms /></>
-                        ) : contract.status === "WaitSignature" ? (
-                          <>Imzolash Kutilmoqda <FaFileSignature /></>
-                        ) : contract.status === "End" ? (
-                          <>To'liq tasdiqlangan <MdOutlineDoneAll /></>
-                        ) : (
-                          "Err"
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
+                    return (
+                      <tr key={contract._id}>
+                        <td>{index + 1}</td>
+                        <td>
+                          <a href={`${import.meta.env.VITE_API_URL_BACKEND}/contractview/${contract._id}`} target="_blank">
+                            {contract.title}
+                          </a>
+                        </td>
+                        <td>{formatDate(contract.createDate)}</td>
+                        <td>{parsedSubject.name}</td>
+                        <td>{parsedSubject.title}</td>
+                        <td>{parsedSubject.date}</td>
+                        <td>{formatDate(contract.updateDate)}</td>
+                        <td>
+                          {contract.status === "Create" ? (
+                            <>Yaratolgan Sms tasdiqlash kutilmoqda <MdOutlineSms /></>
+                          ) : contract.status === "WaitSignature" ? (
+                            <>Imzolash Kutilmoqda <FaFileSignature /></>
+                          ) : contract.status === "End" ? (
+                            <>To'liq tasdiqlangan <MdOutlineDoneAll /></>
+                          ) : (
+                            "Err"
+                          )}
+                        </td>
+                        <td>
+                          <Button variant="danger" className="ms-2" onClick={() => ConfirmDelete(contract._id)}>
+                              O'chirish
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
 
             </Table>

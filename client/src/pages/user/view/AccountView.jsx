@@ -126,40 +126,38 @@ const UserAccountView = observer(() => {
         }
     };
 
-
-
-    const [error, setError] = useState('');
+    const [error, setError] = useState("");
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        
+
         if (!file) {
             return;
         }
 
         // Проверка MIME-типа файла
-        const allowedTypes = ['image/jpeg', 'image/png'];
+        const allowedTypes = ["image/jpeg", "image/png"];
         if (!allowedTypes.includes(file.type)) {
-            alert('Файл должен быть формата PNG или JPG.');
+            alert("Файл должен быть формата PNG или JPG.");
             return;
         }
 
         const img = new Image();
         img.src = URL.createObjectURL(file);
-        
+
         img.onload = () => {
             // Проверка размера изображения
             if (img.width === 1024 && img.height === 1024) {
-                setError('');  // Все проверки пройдены
+                setError(""); // Все проверки пройдены
                 setPhoto(event.target.files[0]);
                 // Дальнейшая обработка файла...
             } else {
-                alert('Изображение должно быть размером 1024x1024 пикселей.');
+                alert("Изображение должно быть размером 1024x1024 пикселей.");
             }
         };
 
         img.onerror = () => {
-            alert('Не удалось загрузить изображение.');
+            alert("Не удалось загрузить изображение.");
         };
     };
 
@@ -227,10 +225,10 @@ const UserAccountView = observer(() => {
                                                     <Form.Label>{t("User:Account:Subject:Phone")}</Form.Label>
                                                     <Form.Control type="text" placeholder="Telefon raqam" value={userInfo.phone} disabled />
                                                 </Form.Group>
-                                                
+
                                                 <Form.Group controlId="formFile" className="mb-3">
                                                     <Form.Label>Rasm yuklash</Form.Label>
-                                                    <Form.Control type="file" onChange={handleFileChange}  />
+                                                    <Form.Control type="file" onChange={handleFileChange} />
                                                 </Form.Group>
                                             </Form>
                                             <Button onClick={updateUserInfo}>{t("User:Account:UpdateButton")}</Button>

@@ -31,6 +31,7 @@ import AI_icon from "../../assets/img/sidebar/ai.svg";
 import PdfEditor_icon from "../../assets/img/sidebar/pdfEditor.svg";
 import Tahrirchi_icon from "../../assets/img/sidebar/tahrirchi.svg";
 import OneNote_icon from "../../assets/img/sidebar/1Note.svg";
+import Translater_icon from "../../assets/img/sidebar/translater.svg";
 
 import Wallet_icon from "../../assets/img/wallet.svg";
 
@@ -50,6 +51,11 @@ import Sms_icon_light from "../../assets/img/sidebar/sms-light.svg";
 import Mail_icon_light from "../../assets/img/sidebar/gmail-light.svg";
 import OCR_icon_light from "../../assets/img/sidebar/ocr-light.svg";
 import Locker_icon_light from "../../assets/img/sidebar/locker-light.svg";
+import AI_icon_light from "../../assets/img/sidebar/ai-light.svg";
+import PdfEditor_icon_light from "../../assets/img/sidebar/pdfEditor-light.svg";
+import Tahrirchi_icon_light from "../../assets/img/sidebar/tahrirchi-light.svg";
+import OneNote_icon_light from "../../assets/img/sidebar/1Note-light.svg";
+import Translater_icon_light from "../../assets/img/sidebar/translater-light.svg";
 
 import Theme_icon from "../../assets/img/sidebar/theme-icon.svg";
 import dark_icon from "../../assets/img/sidebar/theme-icon-dark.svg";
@@ -68,6 +74,9 @@ import { Modal, Table } from "react-bootstrap";
 import "../../assets/css/_sidebar.scss";
 import UserContractViewComponent from "./view/components/ContractViewComponent";
 import { updateUserPhoto } from "../../function/http/UserApi";
+import UserConvertView from "./view/ConvertView";
+import UserTranslaterView from "./view/TranslaterView";
+import UserTahrirchiView from "./view/TahrirchiView";
 
 const UserDashboard = observer(() => {
     const { user } = useContext(Context);
@@ -422,13 +431,8 @@ const UserDashboard = observer(() => {
                         <div className="side-wrapper">
                             <div className="side-title">MENU</div>
                             <div className="side-menu">
-                                <a
-                                    className={`sidebar-link pochta ${activeLink === "AI" ? "is-active" : ""}`}
-                                    // onClick={() => handleLinkClick('Mail')}
-                                    // onMouseEnter={() => handleLinkHover('Mail')}
-                                    // onMouseLeave={() => handleLinkHover("")}
-                                >
-                                    <img src={`${activeLink === "AI" || hoveredLink === "AI" ? AI_icon : AI_icon}`} width={30} height={30} alt="" />
+                                <a className={`sidebar-link pochta ${activeLink === "AI" ? "is-active" : ""}`} onClick={() => handleLinkClick("AI")} onMouseEnter={() => handleLinkHover("AI")} onMouseLeave={() => handleLinkHover("")}>
+                                    <img src={`${activeLink === "AI" || hoveredLink === "AI" ? AI_icon_light : AI_icon}`} width={30} height={30} alt="" />
                                     {t("User:AI:Title")}
                                 </a>
                                 <a
@@ -486,12 +490,7 @@ const UserDashboard = observer(() => {
                         <div className="side-wrapper">
                             <div className="side-title">Tools</div>
                             <div className="side-menu">
-                                <a
-                                    className={`sidebar-link pochta ${activeLink === "Mail" ? "is-active" : ""}`}
-                                    // onClick={() => handleLinkClick('Mail')}
-                                    // onMouseEnter={() => handleLinkHover('Mail')}
-                                    // onMouseLeave={() => handleLinkHover("")}
-                                >
+                                <a className={`sidebar-link pochta ${activeLink === "Mail" ? "is-active" : ""}`} onClick={() => handleLinkClick("Mail")} onMouseEnter={() => handleLinkHover("Mail")} onMouseLeave={() => handleLinkHover("")}>
                                     <img src={`${activeLink === "Mail" || hoveredLink === "Mail" ? Mail_icon_light : Mail_icon}`} width={30} height={30} alt="" />
                                     {t("User:Mail:Title")}
                                 </a>
@@ -513,31 +512,41 @@ const UserDashboard = observer(() => {
 
                                 <a
                                     className={`sidebar-link locker ${activeLink === "PdfEditor" ? "is-active" : ""}`}
-                                    // onClick={() => handleLinkClick("Locker")}
-                                    // onMouseEnter={() => handleLinkHover("Locker")}
-                                    // onMouseLeave={() => handleLinkHover("")}
+                                    onClick={() => handleLinkClick("PdfEditor")}
+                                    onMouseEnter={() => handleLinkHover("PdfEditor")}
+                                    onMouseLeave={() => handleLinkHover("")}
                                 >
-                                    <img src={`${activeLink === "PdfEditor" || hoveredLink === "PdfEditor" ? Locker_icon_light : PdfEditor_icon}`} width={30} height={30} alt="" />
+                                    <img src={`${activeLink === "PdfEditor" || hoveredLink === "PdfEditor" ? PdfEditor_icon_light : PdfEditor_icon}`} width={30} height={30} alt="" />
                                     {t("User:PdfEditor:Title")}
                                 </a>
 
                                 <a
                                     className={`sidebar-link locker ${activeLink === "Tahrirchi" ? "is-active" : ""}`}
-                                    // onClick={() => handleLinkClick("Locker")}
-                                    // onMouseEnter={() => handleLinkHover("Locker")}
-                                    // onMouseLeave={() => handleLinkHover("")}
+                                    onClick={() => handleLinkClick("Tahrirchi")}
+                                    onMouseEnter={() => handleLinkHover("Tahrirchi")}
+                                    onMouseLeave={() => handleLinkHover("")}
                                 >
-                                    <img src={`${activeLink === "Tahrirchi" || hoveredLink === "Tahrirchi" ? Locker_icon_light : Tahrirchi_icon}`} width={30} height={30} alt="" />
+                                    <img src={`${activeLink === "Tahrirchi" || hoveredLink === "Tahrirchi" ? Tahrirchi_icon_light : Tahrirchi_icon}`} width={30} height={30} alt="" />
                                     {t("User:Tahrirchi:Title")}
                                 </a>
 
                                 <a
-                                    className={`sidebar-link locker ${activeLink === "OneNote" ? "is-active" : ""}`}
-                                    // onClick={() => handleLinkClick("Locker")}
-                                    // onMouseEnter={() => handleLinkHover("Locker")}
-                                    // onMouseLeave={() => handleLinkHover("")}
+                                    className={`sidebar-link locker ${activeLink === "Translater" ? "is-active" : ""}`}
+                                    onClick={() => handleLinkClick("Translater")}
+                                    onMouseEnter={() => handleLinkHover("Translater")}
+                                    onMouseLeave={() => handleLinkHover("")}
                                 >
-                                    <img src={`${activeLink === "OneNote" || hoveredLink === "OneNote" ? Locker_icon_light : OneNote_icon}`} width={30} height={30} alt="" />
+                                    <img src={`${activeLink === "Translater" || hoveredLink === "Translater" ? Translater_icon_light : Translater_icon}`} width={30} height={30} alt="" />
+                                    {t("User:Translater:Title")}
+                                </a>
+
+                                <a
+                                    className={`sidebar-link locker ${activeLink === "OneNote" ? "is-active" : ""}`}
+                                    onClick={() => handleLinkClick("OneNote")}
+                                    onMouseEnter={() => handleLinkHover("OneNote")}
+                                    onMouseLeave={() => handleLinkHover("")}
+                                >
+                                    <img src={`${activeLink === "OneNote" || hoveredLink === "OneNote" ? OneNote_icon_light : OneNote_icon}`} width={30} height={30} alt="" />
                                     {t("User:OneNote:Title")}
                                 </a>
                             </div>
@@ -557,6 +566,8 @@ const UserDashboard = observer(() => {
                             <UserDocumentView />
                         ) : activeLink === "Signature" ? (
                             <UserSignatureView />
+                        ) : activeLink === "PdfEditor" ? (
+                            <UserConvertView />
                         ) : activeLink === "Sms" ? (
                             <UserSmsView />
                         ) : activeLink === "Mail" ? (
@@ -567,6 +578,10 @@ const UserDashboard = observer(() => {
                             <UserLockerView />
                         ) : activeLink === "Account" ? (
                             <UserAccountView />
+                        ) : activeLink === "Tahrirchi" ? (
+                            <UserTahrirchiView />
+                        ) : activeLink === "Translater" ? (
+                            <UserTranslaterView />
                         ) : null}
                     </div>
                 </div>
@@ -613,7 +628,7 @@ const UserDashboard = observer(() => {
                                     <img src={Alif_QrCode} alt="ALIF APY QR CODE" width={150} />
                                     <div className="ms-5">
                                         <p>Tariff: YaTT</p>
-                                        <p>500 000 so'm</p>
+                                        <p>To'lov miqdori: 149 000 so'm</p>
                                     </div>
                                 </div>
                                 <div></div>

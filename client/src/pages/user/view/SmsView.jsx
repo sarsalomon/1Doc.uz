@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useContext, useEffect, useState } from "react";
 
-import { getDatasContractById } from "../../../function/http/ContractAPI";
 import { Context } from "../../../main";
 import { useTranslation } from "react-i18next";
 import { RiFileExcel2Line } from "react-icons/ri";
@@ -14,9 +13,7 @@ const UserSmsView = observer(() => {
     const { t } = useTranslation();
 
     useEffect(() => {
-        getDatasContractById(user._user.id).then((data) => {
-            setContracts(data);
-        });
+     
     }, []);
 
     return (
