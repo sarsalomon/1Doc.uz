@@ -1,23 +1,23 @@
-import { useContext, useEffect, useState, useCallback } from "react";
-import { observer } from "mobx-react-lite";
-import { Button, Form, Modal } from "react-bootstrap";
-import { Helmet } from "react-helmet-async";
-import { toast, ToastContainer } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { observer } from "mobx-react-lite"
+import { useContext, useEffect, useState } from "react"
+import { Button, Form, Modal, Tab, Tabs } from "react-bootstrap"
+import { Helmet } from "react-helmet-async"
+import { useTranslation } from "react-i18next"
+import { Link, useNavigate } from "react-router-dom"
+import { toast, ToastContainer } from "react-toastify"
 
-import { Context } from "../../main";
+import { Context } from "../../main"
 
-import { registration, signIn } from "../../function/http/UserApi";
-import { ADMIN_DASHBOARD_ROUTE, USER_DASHBOARD_ROUTE, HOME_ROUTE } from "../../utils/consts";
+import { registration, signIn } from "../../function/http/UserApi"
+import { ADMIN_DASHBOARD_ROUTE, HOME_ROUTE, USER_DASHBOARD_ROUTE } from "../../utils/consts"
 
-import Logo_Light from "../../assets/img/logo_light.webp";
-import Login_img from "../../assets/img/login.png";
 
 const Auth = observer(() => {
     const { user } = useContext(Context);
     const { t } = useTranslation();
     const navigate = useNavigate();
+
+    const [key, setKey] = useState('first');
 
     const [show, setShow] = useState(false);
     const [name, setName] = useState("");
@@ -173,46 +173,40 @@ const Auth = observer(() => {
                 <title>{t("General:Auth:Registration:PageTitle")}</title>
             </Helmet>
             <div>
-                <header>
+                {/* <header>
                     <nav>
                         <Link to={HOME_ROUTE} className="logo">
                             <img src={Logo_Light} alt="1doc.uz Logo" />
                             <h1>1doc.uz</h1>
                         </Link>
                     </nav>
-                </header>
+                </header> */}
 
                 <main>
-                    <div className="main-img">
-                        <img src={Login_img} alt="Login" />
+                    <div className="row">
+                    <div className="col-md-8 main-img">
                     </div>
 
-                    <form className="main-content" onSubmit={handleSubmit}>
+                    <div className="col-md-4 main-content">
+                    <h2 className='my-3'>Ro'yxatdan o'tish</h2>
+                    <form 
+                    onSubmit={handleSubmit}>
+                        <Tabs
+                        id="controlled-tab-example"
+                        activeKey={key}
+                        onSelect={(k) => setKey(k)}
+                        className="mb-3"
+                    >
+                        {/* First Tab */}
+                        <Tab eventKey="first" title="Kirish">
                         <div className="form-group">
-                            <label htmlFor="nameInput">Ism</label>
-                            <input type="text" className="form-control" id="nameInput" placeholder="Asadbek" onChange={(e) => setName(e.target.value)} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="surnameInput">Familya</label>
-                            <input type="text" className="form-control" id="surnameInput" placeholder="Aliyev" onChange={(e) => setSurname(e.target.value)} />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="phoneInput">Telefon raqamingizni kiriting</label>
+                            <label htmlFor="phoneInput">Pochta / Telefon raqamingizni kiriting</label>
                             <input type="text" className="form-control" id="phoneInput" placeholder="+998 xx xxx xx xx" maxLength={9} minLength={9} onChange={(e) => setPhone(e.target.value)} />
                         </div>
-
                         <div className="form-group">
                             <label htmlFor="passwordInput">Parolni kiriting</label>
                             <input type="password" className="form-control" id="passwordInput" placeholder="********" onChange={(e) => setPassword(e.target.value)} />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="repeatPasswordInput">Takrorlang</label>
-                            <input type="password" className="form-control" id="repeatPasswordInput" placeholder="********" onChange={(e) => setRepeatPassword(e.target.value)} />
-                        </div>
-
-                        <div className="d-flex justify-content-center align-items-center form-group">
+                            <div className="d-flex justify-content-center align-items-center form-group">
                             <div className="form-check">
                                 <input type="checkbox" className="form-check-input" id="whoisCheck" checked={whois} onChange={handleCheckboxChange} />
                                 <label className="form-check-label" htmlFor="whoisCheck">
@@ -224,22 +218,36 @@ const Auth = observer(() => {
                                 Akkauntim bor
                             </button>
                         </div>
+                        </div>
+                        </Tab>
 
-                        <div className="form-group">
+        {/* Second Tab */}
+        <Tab eventKey="second" title="Kalit orqali kirish">
+        <div className="form-group">
+                            <label htmlFor="repeatPasswordInput">Kalitni kiriting</label>
+                            <input type="password" className="form-control" id="repeatPasswordInput" placeholder="ЭЦП" onChange={(e) => setRepeatPassword(e.target.value)} />
+                        </div>
+                  </Tab>
+                </Tabs>
+      <div className="form-group">
                             <button type="submit" className="btn btn-primary">
                                 RO’YXATDAN O’TISH
                             </button>
                         </div>
                     </form>
+                </div>
+            </div>
+                    
                 </main>
 
-                <Modal className="py-4" show={show} onHide={handleClose} backdrop="static" keyboard={false} centered>
+                <Modal className="py-4 sigNmodal" show={show} onHide={handleClose} backdrop="static" keyboard={false} centered>
                     <Modal.Header closeButton>
-                        <div className="d-inline align-items-center justify-content-center">
+                        <div className=" closeHeader">
                             <Modal.Title>{t("General:Auth:pageTitle")}</Modal.Title>
-                            <span>
+                            <span onClick={handleClose}>
                                 {t("General:Auth:notRegister")} <Link to="/registration">{t("General:Auth:register")}</Link>
                             </span>
+                            <button className="closeBtn btn " onClick={handleClose}>X</button>
                         </div>
                     </Modal.Header>
                     <Modal.Body>

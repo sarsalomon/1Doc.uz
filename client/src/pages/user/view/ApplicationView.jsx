@@ -115,7 +115,7 @@ const UserApplicationView = observer(() => {
                 <div className="col folders">
                     <div className="folder-group" role="group">
                         {[1, 2, 3, 4, 5].map((num) => (
-                            <button key={num} type="button" className="folder">
+                            <button key={num} type="button" className="folder bg-transparent">
                                 <svg className="folder-icon" width="53" height="43" viewBox="0 0 53 43">
                                     <path d="M47.7 5.375H26.5L22.7529 1.57487C21.7592 0.567062 20.4103 0 19.0058 0H5.3C2.385 0 0 2.41875 0 5.375V37.625C0 40.5812 2.385 43 5.3 43H47.7C50.615 43 53 40.5812 53 37.625V10.75C53 7.79375 50.615 5.375 47.7 5.375Z" />
                                 </svg>
@@ -127,7 +127,7 @@ const UserApplicationView = observer(() => {
 
                 <div className="col-auto search-wrapper">
                     <div className="input-group">
-                        <input type="text" className="form-control" placeholder={t("User:Search_text")} />
+                        <input type="text" className="form-control bg-transparent" placeholder={t("User:Search_text")} />
                         <button className="btn btn-outline-secondary" type="button">
                             <CiSearch />
                         </button>
@@ -142,22 +142,25 @@ const UserApplicationView = observer(() => {
                             №
                         </th>
                         <th scope="col" rowSpan="2">
-                            {t("arizalar-table-title-1")}
+                            {t("User:Application:Component:Text_1")}
                         </th>
                         <th scope="col" colSpan="3">
-                            {t("arizalar-table-title-1")}
+                            {t("User:Application:Component:Text_2")}
                         </th>
                         <th scope="col" colSpan="2" rowSpan="2">
-                            {t("arizalar-table-title-2")}
+                            {t("User:Application:Component:Text_3")}
                         </th>
                         <th scope="col" rowSpan="2">
-                            {t("arizalar-table-title-3")}
+                            {t("User:Application:Component:Text_4")}
+                        </th>
+                        <th scope="col" rowSpan="2">
+                            {t("User:Application:Component:Text_5")}
                         </th>
                     </tr>
                     <tr>
-                        <th scope="col">{t("arizalar-table-title-4")}</th>
-                        <th scope="col">{t("arizalar-table-title-5")}</th>
-                        <th scope="col">{t("arizalar-table-title-6")}</th>
+                        <th scope="col">{t("User:Application:Component:Text_6")}</th>
+                        <th scope="col">{t("User:Application:Component:Text_7")}</th>
+                        <th scope="col">{t("User:Application:Component:Text_8")}</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -6,7 +6,7 @@ import { Helmet } from "react-helmet-async";
 import { ToastContainer, toast } from "react-toastify";
 import { Document, Packer, Paragraph, TextRun } from "docx";
 import { Form } from "react-bootstrap";
-
+import { IoMdImages } from "react-icons/io";
 const UserOcrView = observer(() => {
     const [imageSrc, setImageSrc] = useState("");
     const [ocrLanguage, setOcrLanguage] = useState("");
@@ -157,27 +157,32 @@ const UserOcrView = observer(() => {
                 <title>{t("User:OCR:Title")}</title>
             </Helmet>
             <div className="ocr-page">
-                <button className="upload-btn btn btn-outline-primary">
+                
+                <button className="upload-btn btn           
+                    btn-outline-primary">
+                    <IoMdImages className='drop-images'/>
                     {t("User:FileUpload")} (.jpg, .png)
-                    <input type="file" onChange={handleFileChange} disabled={loading} />
+                    <input className='upload-input' type="file" onChange={handleFileChange} disabled={loading} accept=".jpg, .png"/>
                 </button>
 
-                <div className="d-flex flex-column justify-content-center align-items-center mt-3">
-                    <Form.Select
-                        onChange={(e) => {
-                            setOcrLanguage(e.target.value);
-                        }}
-                    >
-                        <option key="empty" value="">
-                            Tilni tanglang
-                        </option>
-                        {language_ocr.map((language) => (
-                            <option key={language.id} value={language.id}>
-                                {language.Title}
+                <div className="ocr-translate">
+                    
+                        <Form.Select
+                        className="custom-select"
+                            onChange={(e) => {
+                                setOcrLanguage(e.target.value);
+                            }}>
+                            <option key="empty" value="">
+                                Tilni tanglang
                             </option>
-                        ))}
-                    </Form.Select>
-                    <button className="convert-btn btn btn-primary mt-3" onClick={handleConvertClick} disabled={loading || !file}>
+                            {language_ocr.map((language) => (
+                                <option key={language.id} value={language.id}>
+                                    {language.Title}
+                                </option>
+                            ))}
+                        </Form.Select>
+                    
+                    <button className="convert-btn btn btn-primary" onClick={handleConvertClick} disabled={loading || !file}>
                         {t("User:OCR:Convert_button")}
                     </button>
                 </div>

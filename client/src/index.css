@@ -155,6 +155,10 @@
 	padding: 10px 15px;
 	border-radius: 4px;
 	transition: all 0.2s ease-in-out;
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-ms-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
 }
 #sidebar .sidebar .logo {
 	display: none;
@@ -2060,6 +2064,10 @@ body::-webkit-scrollbar-track {
 	border: 0;
 	border-top: 10px solid transparent;
 	border-bottom: 10px solid transparent;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
 }
 
 div {
@@ -2810,10 +2818,11 @@ footer ul li a {
 footer .footer-bottom {
 	display: flex;
 	align-items: center;
-	padding: 50px 0px;
+	padding: 10px 0px;
 }
 footer .footer-bottom .title {
-	font-size: 31px;
+	font-size: 36px;
+	font-weight: 500;
 }
 footer .footer-bottom .socials {
 	display: flex !important;
@@ -3278,20 +3287,7 @@ main .main-content p.reminder a {
 	padding-top: 10px;
 }
 
-.PaymentType ul {
-	display: flex;
-	list-style: none;
-}
 
-.PaymentType ul li {
-	border: 2px solid transparent;
-	transition: 0.5s all ease;
-}
-
-.PaymentType ul li:hover {
-	border: 2px solid red;
-	transition: 0.1s all ease;
-}
 
 .toggle-text {
 	max-height: 0;
@@ -3336,54 +3332,126 @@ main .main-content p.reminder a {
 }
 
 
-.faq-container {
-	display:flex;
-  	justify-content: center;
-	padding:0 !important;
-	margin: 100px auto !important;
+
+.telegramShareBtn {
+	position: fixed;
+	z-index: 99;
+	padding:12px;
+	text-align: center;
+	display:-inline-flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	background: #0088cc;
+	bottom: 40px;
+	right: 50px;
+	border-radius: 50px;
+	text-decoration: none;
+	line-height: 45px;
+	color: white;
+	font-size: 40px;
+	transition: all .5s ease;
+	box-shadow: 0px 4px 8px rgba(195, 243, 243, 1);
 }
 
-.faq-row-wrapper {
-	width: 75%;
-	height: 100%;
-	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
-	padding:  40px;
-	border-radius: 14px;
-	border: 1px solid #cccccc;   
+.telegramShareBtn:hover {
+	box-shadow: 4px 6px 18px rgba(195, 243, 243, 1);
+	background: #01527a;
+	font-size: 46px;
+	transition: all .5s ease;
+	color: white;
 
-	.faq-title {
-		justify-content: center !important;
-		
-		h2{
-			font-weight: 800 !important;
-			font-size: 40px !important;
-			margin-bottom: 30px !important;
-			font-family: "Times New Roman", Times, san-serif !important;
-		} 
-	}
+}
 
-	.faq-body {
+
+/* Management css */
+
+.management.container {
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+	background-color: #fff;
+	border-radius: 5px;
+	padding: 40px;
+	position: relative;
+	width: 900px;
+}
+.management .text-start {
+	padding-left: 50px;
+}
+
+.management .card-container {
+	padding: 0;
+	margin: 0;
+}
+
+.management .card-box {
+	font-size: 1em;
+}
+
+.management .card-tabs {
+	margin-right: 0;
+	overflow: visible;
+	display: flex;
+	justify-content: flex-end;
+	position: relative;
+	z-index: 3;
+	padding: 0;
+	padding-left: 50px;
+	font-size: 1em;
+	margin-bottom: 15px;
+}
+
+.management .custom-tabs .nav-tabs {
+	border-bottom: 2px solid #007bff;
+	padding: 5px 20px;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: 1px;
+	margin-right: 0;
+	padding: 0;
+	box-sizing: border-box;
+	list-style: none;
+}
+
+.management .custom-tabs .nav-item .nav-link {
+	margin-right: 0;
+	/* width: 118px; */
+	height: 38px;
+	padding:0 15px;
+	overflow: visible;
+	display: block;
+	position: relative;
+	z-index: 3;
+	font-size: 1em;
+	background-color: #e3e3e3;
+	color: #666;
+	border-radius: 0;
+}
+
+.management .custom-tabs .nav-item .nav-link.active {
+	background-color: #007bff;
+	color: white;
+}
+
+.management .custom-collapse .collapse.show {
+	background-color: #f8f9fa;
+	border: 1px solid #007bff;
+}
+
+
+.management .mt-4{
+	display: block;
+	justify-content:start;
+	align-items: center;
 	
-			.faq-row {
-				
-				padding: 0.5em 0.5em!important;
-				font-family: "Times New Roman", Times, serif!important;
-
-					.row-title {
-						font-weight: bold!important;
-						  font-size: 20px!important;
-						
-
-					}
-
-					.row-content {
-							padding: 0.5em 0.5em!important;
-
-							.row-content-text {
-								font-family: "Times New Roman", Times, serif!important;
-								font-size: 16px!important;
-							}
-					}
-			}
-	}
 }
+
+.management .mt-4 .iconsGram {	
+	width: 30px;
+	height: 30px;
+}
+
+.management .mt-4 a {
+	margin-left: 5px;
+}
+
+/* Management css */

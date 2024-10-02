@@ -12,11 +12,12 @@ import { Viewer, Worker } from "@react-pdf-viewer/core";
 
 import { MdOutlineOpenInNew } from "react-icons/md";
 import { RiFileExcel2Line } from "react-icons/ri";
-import { MdDeleteOutline } from "react-icons/md";
+// import { MdDeleteOutline } from "react-icons/md";
 import { MdOutlineSms } from "react-icons/md";
 import { FaFileSignature } from "react-icons/fa";
 import { MdOutlineDoneAll } from "react-icons/md";
-
+import { LiaFileSignatureSolid } from "react-icons/lia";
+import { MdOutlineUploadFile } from "react-icons/md";
 import { addDataSignature, addDataSignatureDraft, deleteDataSignature, deleteDataSignatureDraft, fetchDataSignatureById } from "../../../function/http/SignatureAPI";
 
 const UserSignatureView = observer(() => {
@@ -75,8 +76,26 @@ const UserSignatureView = observer(() => {
         }
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+
+    const ConfirmSubmit = (id) => {
+        confirmAlert({
+            title: "Yaratishni tasdiqlang",
+            message: "Ishonchingiz komilmi yaratishga?",
+            buttons: [
+                {
+                    label: "Ha",
+                    onClick: () => handleSubmit(),
+                },
+                {
+                    label: "Yo`q",
+                },
+            ],
+            closeOnEscape: true,
+            closeOnClickOutside: true,
+        });
+    };
+
+    const handleSubmit = async () => {
         try {
             const formData = new FormData();
             formData.append("file", file);
@@ -204,14 +223,15 @@ const UserSignatureView = observer(() => {
                 <title>{t("User:Signature:Title")}</title>
             </Helmet>
             <div className="imzo-page">
-                <div className="row align-items-center top-bar" onClick={() => setShow(true)}>
-                    <div className="col-auto upload-btn-wrapper">
-                        <button className="btn btn-outline-primary" aria-label="Upload Button">
+             
+                        <button className="upload-btn btn btn-outline-primary" aria-label="Upload Button"
+                        onClick={() => setShow(true)}
+                        >
+                        <LiaFileSignatureSolid className='drop-images'/>
+                    
                             <span>Yuklash</span>
                         </button>
-                    </div>
-                </div>
-
+                
                 <table className="table table-bordered mt-4">
                     <thead>
                         <tr>
@@ -273,7 +293,7 @@ const UserSignatureView = observer(() => {
                                     )}
                                 </td>
                                 <td>
-                                    <Button variant="danger" className="ms-2" onClick={() => ConfirmDelete(signature._id)}>
+                                    <Button variant="danger" className=" btn-info ms-2" onClick={() => ConfirmDelete(signature._id)}>
                                         O'chirish
                                     </Button>
                                 </td>
@@ -288,34 +308,35 @@ const UserSignatureView = observer(() => {
                 </button>
             </div>
 
-            <Modal show={show} onHide={handleClose} dialogClassName="Signature-modal-90w">
-                <Modal.Header closeButton>
-                    <Modal.Title id="example-custom-modal-styling-title">Imzolash oynasi</Modal.Title>
+            <Modal className='sigNmodal' show={show} onHide={handleClose} dialogClassName="Signature-modal-90w">
+                <Modal.Header closeButton className=" closeHeader">
+                    <Modal.Title id="example-custom-modal-styling-title">Imzolash oynasi
+                    </Modal.Title>
+                    <button className="closeBtn btn " onClick={handleClose}>X</button>
                 </Modal.Header>
                 <Modal.Body>
                     <div>
                         <h1>Hujjatni yuklang (.docx)</h1>
                         {pdfFile == "" ? (
-                            <div
+                            <button
                                 {...getRootProps()}
-                                style={{
-                                    border: "2px dashed #0087F7",
-                                    padding: "20px",
-                                    textAlign: "center",
-                                    marginBottom: "20px",
-                                }}
-                            >
-                                <input {...getInputProps()} />
+                             className="upload-btn btn btn-outline-primary" aria-label="Upload Button"
+                            >   
+                                <input {...getInputProps()}
+                                 className='upload-input' type="file"
+                                accept=".jpg, .png"
+                                 />
+                                 <LiaFileSignatureSolid className='drop-images'/>
                                 {isDragActive ? <p>{t("Fayllarni bu erga tashlang...")}</p> : <p>{t("Fayllarni bu erga tashlang yoki fayllarni tanlash uchun bosing")}</p>}
-                            </div>
+                            </button>
                         ) : (
-                            <div></div>
+                            <button></button>
                         )}
                     </div>
                     <Container fluid>
                         <Row>
-                            <Col xxl={7} xl={7} lg={7} md={7} xs={12}>
-                                <div style={{ height: "750px" }}>
+                            <Col >
+                                <div>
                                     {pdfFile === "" ? null : (
                                         <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
                                             <Viewer fileUrl={pdfFile} />
@@ -367,7 +388,7 @@ const UserSignatureView = observer(() => {
                                             </div>
                                         ) : (
                                             <div className="d-flex justify-content-center align-items-center mt-3">
-                                                <Button variant="primary" style={{ width: "100%" }} onClick={handleSubmit}>
+                                                <Button variant="primary" style={{ width: "100%" }} onClick={ConfirmSubmit}>
                                                     {t("Yaratish")}
                                                 </Button>
                                             </div>

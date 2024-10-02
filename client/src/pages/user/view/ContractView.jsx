@@ -154,7 +154,7 @@ const DeleteContract = async (id) => {
                 <div className="input-group">
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control bg-transparent"
                     placeholder={t("User:Search_text")}
                   />
                   <button className="btn btn-outline-secondary" type="button">
@@ -167,18 +167,18 @@ const DeleteContract = async (id) => {
               <thead>
                 <tr>
                   <th scope="col" rowSpan="2">№</th>
-                  <th scope="col" rowSpan="2">Shartnoma nomi</th>
-                  <th scope="col" colSpan="3">Shartnoma</th>
-                  <th scope="col" colSpan="2">Imzolangan sanasi</th>
-                  <th scope="col" rowSpan="2">Holati</th>
-                  <th scope="col" rowSpan="2">Harakat</th>
+                  <th scope="col" rowSpan="2">{t("User:Contract:Component:Text_1")}</th>
+                  <th scope="col" colSpan="3">{t("User:Contract:Component:Text_2")}</th>
+                  <th scope="col" colSpan="2">{t("User:Contract:Component:Text_3")}</th>
+                  <th scope="col" rowSpan="2">{t("User:Contract:Component:Text_4")}</th>
+                  <th scope="col" rowSpan="2">{t("User:Contract:Component:Text_5")}</th>
                 </tr>
                 <tr>
-                  <th scope="col">Yaratilgan sanasi</th>
-                  <th scope="col">Raqami</th>
-                  <th scope="col">Muddati</th>
-                  <th scope="col">Buyurtmachi</th>
-                  <th scope="col">Imzolagan sanasi</th>
+                  <th scope="col">{t("User:Contract:Component:Text_6")}</th>
+                  <th scope="col">{t("User:Contract:Component:Text_7")}</th>
+                  <th scope="col">{t("User:Contract:Component:Text_8")}</th>
+                  <th scope="col">{t("User:Contract:Component:Text_9")}</th>
+                  <th scope="col">{t("User:Contract:Component:Text_10")}</th>
                 </tr>
               </thead>
               <tbody>

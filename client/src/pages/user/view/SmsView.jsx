@@ -32,7 +32,7 @@ const UserSmsView = observer(() => {
                     <div className="col number-wrapper">
                         <span className="title">{t("User:Sms:Number_wrapper")}</span>
                         <div className="number-group" role="group">
-                            <input type="text" />
+                            <input type="text"  placeholder='Nomerni kiriting'/>
                             <button className="btn btn-primary">{t("User:Sms:Send_button")}</button>
                         </div>
                     </div>

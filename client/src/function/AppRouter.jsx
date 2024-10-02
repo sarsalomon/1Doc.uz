@@ -8,7 +8,8 @@ import { Context } from '../main';
 const AppRouter = observer(() => {
 
     const { user } = useContext(Context);
-    const isAuth = user.isAuth;
+    // const isAuth = user.isAuth;  
+    const isAuth = true;
 
     return (
         <Routes>

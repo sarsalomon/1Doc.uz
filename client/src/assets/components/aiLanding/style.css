@@ -1,0 +1,162 @@
+/* AiLanding CSS */
+
+
+section.aiLanding-Page{
+    display:inline-flex;
+    width: 100% !important;
+    height:180vh !important;
+    font-family: 'Roboto', sans-serif !important;
+    background-color: #f5f5f5 !important;
+    justify-content: center;
+    align-items: center;
+}
+.aiLanding .container {
+    height:100%!important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    justify-content: space-between;
+}
+
+.aiLanding .header-content {
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    height: auto;   
+    
+}
+
+.aiLanding .header-content .b {
+    color: #666;
+}
+
+.aiLanding .aiLanding-card {
+    width: 34%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.aiLanding .aiLanding-card .accordion .accordion-item {
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 12px;
+    padding:5px 0!important;
+    margin-top: 15px;
+    height: 80px;  
+    display:inline-flex;
+    width: 360px;
+    height:auto;
+    justify-content: center;
+}
+.aiLanding .aiLanding-card .accordion .accordion-header h2{
+	font-size: 1rem!important;
+
+}
+
+.aiLanding .aiLanding-card .accordion .accordion-header {
+	justify-content: center;
+    align-items: center;
+    width: 330px;
+}
+
+.aiLanding .aiLanding-card .accordion .accordion-item .accordion-button:not(.collapsed) {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.aiLanding .aiLanding-card .accordion .accordion-item .accordion-button {
+    border-radius: 12px;
+    display:inline-flex;
+    width:100%;
+    height:100%;
+    justify-content: center;
+    align-items:center;
+}
+
+.aiLanding .aiLanding-card .accordion .accordion-header img {
+    height: 40px;
+    width: 40px;
+    margin-right: 5px;
+    margin-left: -14px;
+}
+
+.aiLanding .input-container {
+    width: 70%;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.aiLanding .aiLanding-input {
+    width: 100%;
+    height: 10vh;
+    box-shadow: 0px 2px 18px rgba(0, 0, 0, 0.28);
+    background-color: #fff;
+    border-radius: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    outline: none;
+    align-items: center;
+}
+
+.aiLanding .aiLanding-input input {
+    padding: 28px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    flex-grow: 1;
+}
+
+.aiLanding .aiLanding-input .btn {
+    height: auto;
+    width: auto;
+    background-color: transparent;
+    color: #000;
+    border-radius: 0 12px 12px 0;
+    border: 0;
+    padding: auto 12px;
+}
+
+.aiLanding .aiLanding-input .btn img {
+    height: 40px;
+    width: 40px;
+}
+
+.aiLanding .aiLanding-input .btn:hover {
+    background-color: transparent;
+    color: #000;
+}
+
+.aiLanding .aiLanding-input .btn:active {
+    background-color: transparent;
+    color: transparent;
+}
+
+.aiLanding .aiLanding-input .btn-secondary:active {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+/* Universal font size for <p> elements */
+.aiLanding p {
+    font-size: 16px; /* Adjust size as needed */
+}
+
+section.aiLanding-Page .aiLanding .accordion-text {
+    
+	font-size: 16px;
+	margin:0;
+    padding: 0;
+	font-weight: bolder;
+    width: 100%;
+    text-align: left;
+}
+section.aiLanding-Page .aiLanding .slArrowRight{
+    width:20px;
+    height:20px;
+    margin-left: 10px;
+}
+/* AiLanding CSS */

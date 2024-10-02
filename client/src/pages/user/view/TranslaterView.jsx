@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../../main";
 import { useTranslation } from "react-i18next";
@@ -12,12 +12,33 @@ const UserTranslaterView = observer(() => {
     const { user } = useContext(Context);
     const { t } = useTranslation();
 
+    const textareaRef = useRef(null);
+    const outputTextareaRef = useRef(null);
+
     const [text, setText] = useState("");
     const [endText, setEndText] = useState("");
 
     const [fromLang, setFromLang] = useState("uzn_Latn");
     const [toLang, setToLang] = useState("");
     const [progress, setProgress] = useState(false);
+
+
+    useEffect(() => {
+        if (textareaRef.current) {
+            if(text === ""){
+                textareaRef.current.style.height = '22rem';
+            }else{
+                textareaRef.current.style.height = 'auto';
+                textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
+             }
+        }
+
+        if (outputTextareaRef.current) {
+            outputTextareaRef.current.style.height = 'auto';
+            outputTextareaRef.current.style.height = outputTextareaRef.current.scrollHeight + "px";
+        }
+    }, [text,endText]);
+
 
     const handleTranslate = async () => {
         try {
@@ -98,19 +119,20 @@ const UserTranslaterView = observer(() => {
         }
     };
 
+  
     return (
         <>
             <Helmet>
-                <title>{t("User:Signature:Title")}</title>
+                <title>{t("User:Translater:Title")}</title>
             </Helmet>
-            <Container className="mt-3">
-                <Row>
+            <Container className="translate-container">
+                {/* <Row>
                     <Col>Tilmoch</Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Form>
-                            <Form.Select value={fromLang} onChange={(e) => setFromLang(e.target.value)}>
+                </Row> */}
+                <Row className='translate-row'>
+                    <Col className='translate-col'>
+                        <Form class='form'>
+                            <Form.Select className="custom-select"  value={fromLang} onChange={(e) => setFromLang(e.target.value)}>
                                 <option value="uzn_Latn">O'zbek</option>
                                 <option value="uzn_Cyrl">Ўзбек</option>
                                 <option value="rus_Cyrl">Русский</option>
@@ -118,16 +140,25 @@ const UserTranslaterView = observer(() => {
                                 <option value="kaa_Latn">Qaraqolpoq</option>
                                 <option value="kaa_Cyrl">Қарақолпоқ</option>
                             </Form.Select>
-                            <Form.Group className="mt-3" rows="10" placeholder="Enter text here...">
-                                <Form.Label>{t("Input text")}</Form.Label>
-                                <Form.Control as="textarea" rows={3} value={text} onChange={(e) => setText(e.target.value)} />
+                            <Form.Group className="mt-3" rows="10" placeholder={t("User:Translater:Add_Text")}>
+                              
+                               <Form.Control 
+                                    className="custom-textarea active:outline-none focus:outline-none"
+                                    as="textarea" 
+                                    rows={3} 
+                                    value={text} 
+                                    placeholder={t("User:Translater:Translate_Text")}
+                                    onChange={(e) => setText(e.target.value)} 
+                                    ref={textareaRef}
+                                />
+
                             </Form.Group>
                         </Form>
                     </Col>
-                    <Col>
-                        <Form>
-                            <Form.Select value={toLang} onChange={(e) => setToLang(e.target.value)}>
-                                <option value="">{t("Select target language")}</option>
+                    <Col className='translate-col'>
+                        <Form class='form'>
+                            <Form.Select className="custom-select" value={toLang} onChange={(e) => setToLang(e.target.value)}>
+                                <option value="">{t("User:Translater:To_Lang")}</option>
                                 <option value="uzn_Latn">O'zbek</option>
                                 <option value="uzn_Cyrl">Ўзбек</option>
                                 <option value="rus_Cyrl">Русский</option>
@@ -135,27 +166,31 @@ const UserTranslaterView = observer(() => {
                                 <option value="kaa_Latn">Qaraqolpoq</option>
                                 <option value="kaa_Cyrl">Қарақолпоқ</option>
                             </Form.Select>
-                            <Form.Group className="mt-3" rows="10" placeholder="Enter text here...">
-                                <Form.Label>{t("Translated text")}</Form.Label>
+                            <Form.Group className="mt-3" rows="10">
+                                {/* <Form.Label>{t("User:Translater:Translate_Text")}</Form.Label> */}
                                 <InputGroup>
-                                    <Form.Control as="textarea" rows={3} value={endText} readOnly />
+                                    <Form.Control 
+                                    className="custom-textarea active:outline-none focus:outline-none"
+                                    as="textarea"
+                                    rows={3} 
+                                    value={endText} 
+                                    ref={outputTextareaRef}
+                                    readOnly />
+
                                     {endText != "" ? (
                                         <Button onClick={handleCopy}>
                                             <FaRegCopy />
                                         </Button>
                                     ) : null}
+                                    <Button className='custom-btn' onClick={handleTranslate} disabled={progress}>
+                                    {progress ? t("User:Translater:Progress") : t("User:Translater:Translate")}
+                                </Button>
                                 </InputGroup>
                             </Form.Group>
                         </Form>
                     </Col>
                 </Row>
-                <Row className="mt-3 mx-auto">
-                    <Col className="d-flex justify-content-center align-items-center">
-                        <Button onClick={handleTranslate} disabled={progress}>
-                            {progress ? t("Translating...") : t("Translate")}
-                        </Button>
-                    </Col>
-                </Row>
+                
             </Container>
             <ToastContainer />
         </>

@@ -1,14 +1,21 @@
 /* Certificate css */
 
 .certificateImage .certificate-thumbnail {
-	width: 250px;
-	height: 174px;
+	width: 248px;
+	height: 172px;
 	object-fit: contain;
 	border-radius: 10px;
 	/* border: 0.5px solid #0077b6; */
-	box-shadow: 0px 4px 10px rgba(0, 119, 182, 0.5);
+	box-shadow: 4px 4px 20px rgba(195, 243, 243, 1);
 	cursor: pointer;
+	transition: all .5s ease;
 }
+.certificateImage .certificate-thumbnail:hover {
+	position:relative;
+	width: 254px;
+	height: 176px;
+}
+
 
 .certificateImage .modal {
 	position: fixed;

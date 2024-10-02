@@ -3,21 +3,20 @@ import { observer } from 'mobx-react-lite'
 import { useContext, useEffect, useRef, useState } from 'react'
 import {
 	Button,
-	Carousel,
 	Col,
+	Collapse,
+	Container,
 	Form,
 	Modal,
 	Row,
 	Tab,
 	Tabs,
-	Container,
-	Card
 } from 'react-bootstrap'
 import CountUp from 'react-countup'
+import Faq from 'react-faq-component'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
-import { ReactTyped } from 'react-typed'
 import { signIn } from '../function/http/UserApi'
 import { Context } from '../main'
 import {
@@ -26,18 +25,30 @@ import {
 	REGISTRATION_ROUTE,
 	USER_DASHBOARD_ROUTE,
 } from '../utils/consts'
-import Faq from 'react-faq-component'
 
 import { FaChevronDown } from 'react-icons/fa'
 
 import Logo_Light from '../assets/img/logo_light.webp'
-import Smartphone from '../assets/img/smartphone.png'
 
 // Certificate import
 import CertificateImage from './../assets/components/certificate/CertificateImage'
 
-import Carousel_left_icon from '../assets/img/left-arrow.svg'
-import Carousel_right_icon from '../assets/img/right-arrow.svg'
+// import Carousel_left_icon from "../assets/img/left-arrow.svg";
+// import Carousel_right_icon from "../assets/img/right-arrow.svg";
+
+// AiLanding import
+// import AiLanding from './../assets/components/aiLanding/AiLanding.jsx';
+
+import { Accordion, FormControl, InputGroup } from 'react-bootstrap'
+
+import { FcIdea } from 'react-icons/fc'
+import { SlArrowRight } from 'react-icons/sl'
+import aiLandTwo from './../assets/img/aiLanding/ai-landing.jpg'
+import openAi from './../assets/img/aiLanding/Open-AI-Logo-3D-Icon-PNG.png'
+import aiLandOne from './../assets/img/aiLanding/photo_2024-10-01_02-07-51.jpg'
+import telImg from './../assets/img/aiLanding/tel.png'
+
+import { aiJson } from './../assets/locales/translate/aiFaqsJson/uzAiJson.js'
 
 import Instagram_icon from '../assets/img/instagram-icon.svg'
 import Youtube_icon from '../assets/img/youtube-icon.svg'
@@ -51,11 +62,6 @@ import Qr_img from '../assets/img/tabs/qr.jpg'
 import Contract_img from '../assets/img/tabs/shartnomalar.jpg'
 import Sms_img from '../assets/img/tabs/sms.jpg'
 
-import Bank_img from '../assets/img/bank.svg'
-import Building_img from '../assets/img/building.svg'
-import Edu_img from '../assets/img/edu.svg'
-import Hotel_img from '../assets/img/hotel.svg'
-
 import ESignature_icon_img from '../assets/img/eimzo-icon.svg'
 import Face_icon_img from '../assets/img/face-icon.svg'
 import Signature_icon_img from '../assets/img/faksimile-icon.svg'
@@ -63,19 +69,21 @@ import Phone_icon_img from '../assets/img/phone-icon.svg'
 import certificate from '../assets/img/photo_2024-08-30_18-40-58.jpg'
 import Telegram_icon_img from '../assets/img/telegram-icon.svg'
 
+import { FaTelegramPlane } from 'react-icons/fa'
+
 const Home = observer(() => {
 	const navigate = useNavigate()
 	const { user } = useContext(Context)
 	const { t, i18n } = useTranslation()
 
 	const [show, setShow] = useState(false)
-    const [team, setTeam] = useState(false);
+	const [team, setTeam] = useState(false)
 
 	const handleClose = () => setShow(false)
 	const handleShow = () => setShow(true)
-	
-    const teamClose = () => setTeam(false);
-    const teamShow = () => setTeam(true);
+
+	const teamClose = () => setTeam(false)
+	const teamShow = () => setTeam(true)
 
 	const [phone, setPhone] = useState('')
 	const [password, setPassword] = useState('')
@@ -84,17 +92,28 @@ const Home = observer(() => {
 
 	const statisticsRef = useRef(null)
 	const [isInView, setIsInView] = useState(false)
+	const [aiIndex, setAiIndex] = useState(false)
+	const [inputText, setInputText] = useState('')
 
+	useEffect(() => {
+		if (aiJson.length > 0) {
+			setInputText(aiJson[0].inputText || 'Matnni shu yerga kiriting')
+		}
+	}, [])
+
+	const handleChange = index => {
+		setAiIndex(aiIndex === index ? false : index)
+	}
 
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				if (entry.isIntersecting) {
 					setIsInView(true)
-					observer.disconnect() // Disconnect observer after first trigger
+					observer.disconnect()
 				}
 			},
-			{ threshold: 0.5 } // Adjust as needed
+			{ threshold: 0.5 }
 		)
 
 		if (statisticsRef.current) {
@@ -208,12 +227,11 @@ const Home = observer(() => {
 	const data = {
 		title: 'F.A.Q',
 		rows: Array.from({ length: 6 }, (_, index) => ({
-		  title: t(`General:Home:Faq:question_${index + 1}`),
-		  content: t(`General:Home:Faq:answer_${index + 1}`),
+			title: t(`General:Home:Faq:question_${index + 1}`),
+			content: t(`General:Home:Faq:answer_${index + 1}`),
 		})),
-	  };
-	  
-	
+	}
+
 	const config = {
 		animate: true,
 		arrowIcon: 'V',
@@ -221,7 +239,6 @@ const Home = observer(() => {
 		expandIcon: '+',
 		collapseIcon: '-',
 	}
-
 
 	const languages = [
 		{ code: 'uz', label: "O'zbek" },
@@ -353,131 +370,118 @@ const Home = observer(() => {
 				'General:Home:Tabs:OCR_text_one',
 				'General:Home:Tabs:OCR_text_two',
 			],
-		},
-		{
-			eventKey: 'ai',
-			title: 'General:Home:Tabs:AI',
-			imgSrc: AI_img,
-			imgAlt: 'General:Home:Tabs:AI',
-			listItems: [
-				'General:Home:Tabs:AI_text_one',
-				'General:Home:Tabs:AI_text_two',
-			],
-		},
+		}
 	]
 
-	const carouselItemsData = [
-		{
-			title: 'General:Home:Carousel:Carousel_one',
-			imgSrc: Hotel_img,
-			imgAlt: 'Hotel',
-			text: 'General:Home:Carousel:Carousel_one_text',
-		},
-		{
-			title: 'General:Home:Carousel:Carousel_two',
-			imgSrc: Edu_img,
-			imgAlt: 'Education',
-			text: 'General:Home:Carousel:Carousel_two_text',
-		},
-		{
-			title: 'General:Home:Carousel:Carousel_three',
-			imgSrc: Building_img,
-			imgAlt: 'Building',
-			text: 'General:Home:Carousel:Carousel_three_text',
-		},
-		{
-			title: 'General:Home:Carousel:Carousel_four',
-			imgSrc: Bank_img,
-			imgAlt: 'Bank',
-			text: 'General:Home:Carousel:Carousel_four_text',
-		},
-	]
+	// const carouselItemsData = [
+	//     {
+	//         title: "General:Home:Carousel:Carousel_one",
+	//         imgSrc: Hotel_img,
+	//         imgAlt: "Hotel",
+	//         text: "General:Home:Carousel:Carousel_one_text",
+	//     },
+	//     {
+	//         title: "General:Home:Carousel:Carousel_two",
+	//         imgSrc: Edu_img,
+	//         imgAlt: "Education",
+	//         text: "General:Home:Carousel:Carousel_two_text",
+	//     },
+	//     {
+	//         title: "General:Home:Carousel:Carousel_three",
+	//         imgSrc: Building_img,
+	//         imgAlt: "Building",
+	//         text: "General:Home:Carousel:Carousel_three_text",
+	//     },
+	//     {
+	//         title: "General:Home:Carousel:Carousel_four",
+	//         imgSrc: Bank_img,
+	//         imgAlt: "Bank",
+	//         text: "General:Home:Carousel:Carousel_four_text",
+	//     },
+	// ];
 
 	return (
 		<>
 			<div>
-				<header style={{ paddingBottom: '60px' }}>
-					<nav>
-						<Link to={HOME_ROUTE} className='logo'>
-							<img src={Logo_Light} alt='1doc.uz Logo' />
-							<h1>1doc.uz</h1>
-						</Link>
-
-						<div
-							className='dropdown'
-							onMouseLeave={toggleDropdown}
-							onMouseEnter={toggleDropdown}
-						>
-							<button className='dropbtn'>
-								<span>
-									{localStorage.getItem('Language') === 'uz'
-										? "O'zbek"
-										: localStorage.getItem('Language') === 'ru'
-										? 'Русский'
-										: localStorage.getItem('Language') === 'kr'
-										? 'Ўзбек'
-										: localStorage.getItem('Language') === 'qr'
-										? 'Qaraqalpaq'
-										: localStorage.getItem('Language') === 'qrkr'
-										? 'Қарақалпақ'
-										: localStorage.getItem('Language') === 'en'
-										? 'English'
-										: "O'zbek"}
-								</span>
-								<FaChevronDown className={`icon ${isOpen ? 'open' : ''}`} />
-							</button>
-							{isOpen && (
-								<div className='dropdown-content'>
-									{languages.map(lang =>
-										lang.code !== localStorage.getItem('Language') ? (
-											<a
-												key={lang.code}
-												onClick={() => changeLanguage(lang.code)}
-											>
-												{lang.label}
-											</a>
-										) : null
-									)}
-								</div>
-							)}
-						</div>
-
-						<div className='btns d-flex'>
-							<Link to={REGISTRATION_ROUTE}>
-								<button className='btn btn-primary start-btn'>
-									{t('General:Home:Navbar:Demo_button')}
-								</button>
+				<div className='header-page'>
+					<header>
+						<nav>
+							<Link to={HOME_ROUTE} className='logo'>
+								<img src={Logo_Light} alt='1doc.uz Logo' />
+								<h1>1doc.uz</h1>
 							</Link>
-							<button
-								className='btn btn-outline-primary login-btn'
-								onClick={handleShow}
-							>
-								{t('General:Home:Navbar:Login')}
-							</button>
-						</div>
-					</nav>
 
-					<div className='header-content'>
-						<ReactTyped
-							className='header-title'
-							strings={[t('General:Home:Header:text_two')]}
-							typeSpeed={30}
-							backSpeed={60}
-							loop
-						/>
-						<p>{t('General:Home:Header:Header_description')}</p>
-						<div className='btns d-flex'>
-							<a
-								className='btn btn-primary prices-btn'
-								onClick={() => scrollToElement()}
+							<div
+								className='dropdown'
+								onMouseLeave={toggleDropdown}
+								onMouseEnter={toggleDropdown}
 							>
-								{t('General:Home:Navbar:Tariffs')}
-							</a>
-						</div>
-					</div>
+								<button className='dropbtn'>
+									<span>
+										{localStorage.getItem('Language') === 'uz'
+											? "O'zbek"
+											: localStorage.getItem('Language') === 'ru'
+											? 'Русский'
+											: localStorage.getItem('Language') === 'kr'
+											? 'Ўзбек'
+											: localStorage.getItem('Language') === 'qr'
+											? 'Qaraqalpaq'
+											: localStorage.getItem('Language') === 'qrkr'
+											? 'Қарақалпақ'
+											: localStorage.getItem('Language') === 'en'
+											? 'English'
+											: "O'zbek"}
+									</span>
+									<FaChevronDown className={`icon ${isOpen ? 'open' : ''}`} />
+								</button>
+								{isOpen && (
+									<div className='dropdown-content'>
+										{languages.map(lang =>
+											lang.code !== localStorage.getItem('Language') ? (
+												<a
+													key={lang.code}
+													onClick={() => changeLanguage(lang.code)}
+												>
+													{lang.label}
+												</a>
+											) : null
+										)}
+									</div>
+								)}
+							</div>
 
-					<img src={Smartphone} className='tel smartphone' />
-				</header>
+							<div className='btns d-flex'>
+								<Link to={REGISTRATION_ROUTE}>
+									<button className='btn btn-primary start-btn'>
+										{t('General:Home:Navbar:Demo_button')}
+									</button>
+								</Link>
+								<button
+									className='btn btn-outline-primary login-btn'
+									onClick={handleShow}
+								>
+									{t('General:Home:Navbar:Login')}
+								</button>
+							</div>
+						</nav>
+
+						<div className='header-content'>
+							<div className='header-title'>
+								{[t('General:Home:Header:text_two')]}
+							</div>
+							<p>{t('General:Home:Header:Header_description')}</p>
+
+							<div className='btns d-flex'>
+								<a
+									className='btn btn-primary prices-btn'
+									onClick={() => scrollToElement()}
+								>
+									{t('General:Home:Navbar:Tariffs')}
+								</a>
+							</div>
+						</div>
+					</header>
+				</div>
 
 				<section className='tabs'>
 					<Tabs
@@ -509,39 +513,66 @@ const Home = observer(() => {
 					</Tabs>
 				</section>
 
-				<section className='info-content d-flex justify-content-center align-items-center'>
-					<h3 style={{ textDecoration: 'uppercase' }}>
-						{t('General:Home:Info:Info_content')}
-					</h3>
-					<a href='https://upl.uz/economy/27678-news.html'>STAT.UZ</a>
+				<section className='info-content container'>
+					<div className='row'>
+						<div className='imgInfo col'>
+							<img src={aiLandOne} alt='' />
+							<img src={aiLandTwo} alt='' />
+						</div>
+						<div className='textInfo col                                    '>
+							<h3 style={{ textDecoration: 'uppercase' }}>
+								{t('General:Home:Tabs:AI')}
+							</h3>
+							<p>{t('General:Home:Tabs:AI_text_one')}</p>
+							<p>{t('General:Home:Tabs:AI_text_two')}</p>
+							
+						</div>
+					</div>
 				</section>
 
-				<section className='second-slider'>
-					<Carousel
-						interval={2000}
-						touch
-						variant='dark'
-						prevIcon={<img src={Carousel_left_icon} />}
-						nextIcon={<img src={Carousel_right_icon} />}
-					>
-						{carouselItemsData.map((item, index) => (
-							<Carousel.Item className='carousel-item' key={index}>
-								<h1>{t(item.title)}</h1>
-								<Row className='item-content'>
-									<Col md={6}>
-										<img
-											className='d-block'
-											src={item.imgSrc}
-											alt={item.imgAlt}
-										/>
-									</Col>
-									<Col md={6}>
-										<p>{t(item.text)}</p>
-									</Col>
-								</Row>
-							</Carousel.Item>
-						))}
-					</Carousel>
+				<section className='user-aiLanding '>
+					{aiJson.map((aiDate, index) => (
+						<div key={index} className='aiLanding-card'>
+							<div className='header-content'>
+								<p className='mb-1'>
+									<b>{aiDate.title}</b>
+								</p>
+								<p>
+									<b className='b'>{aiDate.text}</b>
+								</p>
+								<b className='inText'>{aiDate.memberText}</b>
+							</div>
+
+							<Accordion
+								key={index}
+								onChange={() => handleChange(index)}
+								alwaysOpen
+							>
+								<Accordion.Item eventKey={index}>
+									<Accordion.Header>
+										{/* <img src={lamp} alt='icon' /> */}
+										<FcIdea className='icon-lamp' />
+										<span className='accordion-text'>{aiDate.question}</span>
+										<SlArrowRight className='slArrowRight' />
+									</Accordion.Header>
+									{/* <Accordion.Body>{aiDate.answer}</Accordion.Body> */}
+								</Accordion.Item>
+							</Accordion>
+						</div>
+					))}
+					<div className='input-container'>
+						<InputGroup className='aiLanding-input'>
+							<FormControl placeholder={inputText} aria-label='Input text' />
+							<button
+								className='btn btn-secondary'
+								// variant='outline-secondary'
+								id='button-addon2'
+							>
+								<img src={openAi} alt='' />
+							</button>
+						</InputGroup>
+					</div>
+					{/* <AiLanding/> */}
 				</section>
 
 				<section className='statistics' ref={statisticsRef}>
@@ -606,6 +637,7 @@ const Home = observer(() => {
 
 				<section className='signing-types'>
 					<h2>{t('General:Home:Signing:Signing_title')}</h2>
+					<div className="container">
 					<Row className='signing-types-content'>
 						<Col
 							md={2}
@@ -687,6 +719,7 @@ const Home = observer(() => {
 							</div>
 						</Col>
 					</Row>
+					</div>
 				</section>
 
 				<section className='companies'>
@@ -716,6 +749,10 @@ const Home = observer(() => {
 								</h3>
 								<p>{t(priceInfo.contentOne)}</p>
 								<p>{t(priceInfo.contentTwo)}</p>
+								<p>{t(priceInfo.contentThree)}</p>
+								<p>{t(priceInfo.contentFour)}</p>
+								<p>{t(priceInfo.contentFive)}</p>
+								<p>{t(priceInfo.contentSix)}</p>
 								<Form className='price-types'>
 									{priceInfo.months.map((month, index) => (
 										<div className={`type-${index + 1}`} key={index}>
@@ -739,23 +776,33 @@ const Home = observer(() => {
 				</section>
 				<section className='faq'>
 					<div className='faq-container container'>
-						<Faq data={data}  config={config} />
+						<Faq data={data} config={config} />
 					</div>
 				</section>
-				<section className='banner'>
-					<a href='#' className='logo'>
-						<img src={Logo_Light} />
-					</a>
 
-					<div className='content'>
-						<h2>1doc.uz</h2>
-						<h4>{t('General:Home:Banner:Banner_title')}</h4>
+				<section className='banner'>
+					<div className='container'>
+						<div className='row'>
+							<div className='bannerInfo'>
+								<a href='#' className='logo'>
+									<img src={Logo_Light} />
+								</a>
+
+								<div className='content'>
+									<h2>1doc.uz</h2>
+									<h4>{t('General:Home:Banner:Banner_title')}</h4>
+								</div>
+							</div>
+							<div className='bannerImage'>
+								{/* <img src={telImg} alt='banner-image' /> */}
+							</div>
+						</div>
 					</div>
 				</section>
 
 				<footer>
-					<Row>
-						<Col md={3}>
+					<Row className='row-footer'>
+						<Col className='col-footer' md={3}>
 							<h4>{t('General:Home:Footer:Column_one:Column_one_title')}</h4>
 							<ul>
 								<li>
@@ -775,14 +822,14 @@ const Home = observer(() => {
 									</a>
 								</li>
 								<li>
-									<a onClick={teamShow} style={{ cursor: "pointer" }}>
-                                        {t("General:Home:Footer:Column_one:Column_one_text_three")}
-                                    </a>
+									<a onClick={teamShow} style={{ cursor: 'pointer' }}>
+										{t('General:Home:Footer:Column_one:Column_one_text_three')}
+									</a>
 								</li>
 							</ul>
 						</Col>
 
-						<Col md={6}>
+						<Col className='col-footer' md={6}>
 							<h4>{t('General:Home:Footer:Column_two:Column_two_title')}</h4>
 
 							<ul>
@@ -809,7 +856,7 @@ const Home = observer(() => {
 							</ul>
 						</Col>
 
-						<Col md={3}>
+						<Col className='col-footer' md={3}>
 							<h4>
 								{t('General:Home:Footer:Column_three:Column_three_title')}
 							</h4>
@@ -824,7 +871,7 @@ const Home = observer(() => {
 							</ul>
 						</Col>
 					</Row>
-					<hr />
+					<hr className='bg-white' />
 
 					<Row className='row footer-bottom'>
 						<Col md={6} className='title'>
@@ -843,8 +890,16 @@ const Home = observer(() => {
 				</footer>
 			</div>
 
+			<a
+				href='https://t.me/duran_tv'
+				target='_blank'
+				className='telegramShareBtn'
+			>
+				<FaTelegramPlane />
+			</a>
+
 			<Modal
-				className='py-4'
+				className='py-4 sigNmodal'
 				show={show}
 				onHide={handleClose}
 				backdrop='static'
@@ -852,12 +907,13 @@ const Home = observer(() => {
 				centered
 			>
 				<Modal.Header closeButton>
-					<div className='d-inline align-items-center justify-content-center'>
+					<div className='closeHeader'>
 						<Modal.Title>{t('General:Auth:pageTitle')}</Modal.Title>
 						<span>
 							{t('General:Auth:notRegister')}{' '}
 							<Link to='/registration'>{t('General:Auth:register')}</Link>
 						</span>
+						<button className="closeBtn btn " onClick={handleClose}>X</button>
 					</div>
 				</Modal.Header>
 				<Modal.Body>
@@ -900,37 +956,123 @@ const Home = observer(() => {
 					</Form>
 				</Modal.Body>
 			</Modal>
-            <Modal className="py-4" show={team} onHide={teamClose} dialogClassName="Signature-modal-90w" backdrop="static" keyboard={false} centered>
-                <Modal.Header closeButton>
-                    <div className="d-inline align-items-center justify-content-center">
-                        <Modal.Title>Rahbariyat</Modal.Title>
-                    </div>
-                </Modal.Header>
-                <Modal.Body>
-                    <Container fluid>
-                        <Row>
-                            <Col xxl={3} xl={3} lg={3} md={3} xs={6}>
-                                <Card style={{ width: "18rem" }}>
-                                    <Card.Img variant="top" src="holder.js/100px180" />
-                                    <Card.Body>
-                                        <Card.Title>Davron</Card.Title>
-                                        <Card.Text>Some quick example text to build on the card title and make up the bulk of the card's content.</Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                            <Col xxl={3} xl={3} lg={3} md={3} xs={6}>
-                                1
-                            </Col>
-                            <Col xxl={3} xl={3} lg={3} md={3} xs={6}>
-                                1
-                            </Col>
-                            <Col xxl={3} xl={3} lg={3} md={3} xs={6}>
-                                1
-                            </Col>
-                        </Row>
-                    </Container>
-                </Modal.Body>
-            </Modal>
+			<Modal
+				className='py-4'
+				show={team}
+				onHide={teamClose}
+				dialogClassName='Signature-modal-90w'
+				backdrop='static'
+				keyboard={false}
+				centered
+			>
+				<Modal.Header closeButton>
+					<div className='d-inline align-items-center justify-content-center'>
+						<Modal.Title>Rahbariyat</Modal.Title>
+					</div>
+				</Modal.Header>
+				<Modal.Body>
+					<Container fluid>
+						<Row>
+							<Col xxl={3} xl={3} lg={3} md={3} xs={6}>
+								<div className='management'>
+									<div className='card-container'>
+										<div className='card-box'>
+											<div className='card-tabs'>
+												<Tabs activeKey={'tab1'} className='custom-tabs mb-3'>
+													<Tab eventKey='tab1' title='123'></Tab>
+													<Tab eventKey='tab2' title='253'></Tab>
+												</Tabs>
+											</div>
+											<Collapse
+												in={'tab1' === 'tab1'}
+												className='custom-collapse'
+											>
+												<div className='row'>
+													<div className='col-3'>
+														<img
+															// src={img}
+															alt='Profile'
+															className='img-fluid rounded'
+															style={{ width: '185px', height: '185px' }}
+														/>
+													</div>
+													<div className='col-9 text-center'>
+														<p>
+															<strong>
+																<h5>
+																	<b>124</b>
+																</h5>
+																<h4>
+																	<b>124</b>
+																</h4>
+															</strong>
+														</p>
+														<div className='text-start'>
+															<p>
+																<strong>124</strong>
+																<a href='#'>124</a>
+															</p>
+															<p>
+																<strong>124</strong>
+																124
+															</p>
+															<p>
+																<strong>123</strong>
+																1212
+															</p>
+															<div className='mt-4 '>
+																<p>
+																	<span>
+																		<img
+																			// src={telegramIcon}
+																			alt='Telegram'
+																			className='iconsGram'
+																		/>
+																		<a href='#'>124</a>
+																	</span>
+																</p>
+																<p>
+																	<img
+																		// src={instagramIcon}
+																		alt='Instagram'
+																		className='iconsGram'
+																	/>
+																	<a href='#'>124</a>
+																</p>
+															</div>
+														</div>
+													</div>
+												</div>
+											</Collapse>
+
+											<Collapse
+												in={'tab2' === 'tab2'}
+												className='custom-collapse'
+											>
+												<div>
+													<p>
+														<strong>1</strong>
+													</p>
+													<p>2</p>
+												</div>
+											</Collapse>
+										</div>
+									</div>
+								</div>
+							</Col>
+							<Col xxl={3} xl={3} lg={3} md={3} xs={6}>
+								1
+							</Col>
+							<Col xxl={3} xl={3} lg={3} md={3} xs={6}>
+								1
+							</Col>
+							<Col xxl={3} xl={3} lg={3} md={3} xs={6}>
+								1
+							</Col>
+						</Row>
+					</Container>
+				</Modal.Body>
+			</Modal>
 			<ToastContainer />
 		</>
 	)

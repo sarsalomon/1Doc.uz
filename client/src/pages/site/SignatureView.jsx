@@ -252,7 +252,7 @@ const SignatureView = observer(() => {
                 <title>Shartnoma</title>
                 <meta name="description" content="This is my page description." />
             </Helmet>
-            <Container fluid className="mt-4">
+            <Container fluid className="mt-4 ">
                 <Row>
                     <Col>
                         {signatureData?.file && (
@@ -269,7 +269,7 @@ const SignatureView = observer(() => {
                 </Row>
             </Container>
 
-            <Modal show={CodeShow} onHide={() => setCodeShow(false)} backdrop="static" keyboard={false} centered>
+            <Modal className='sigNmodal' show={CodeShow} onHide={() => setCodeShow(false)} backdrop="static" keyboard={false} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Shartnoma tasdiqlash</Modal.Title>
                 </Modal.Header>

@@ -41,14 +41,32 @@
           "Title": "Shartnomalar",
           "Component": {
               "PageTitle": "Shartnoma yaratish",
-              "SelectContract": "Shartnoma Tanglang"
+              "SelectContract": "Shartnoma Tanglang",
+              "Text_1": "Shartnoma nomi",
+              "Text_2": "Shartnoma",
+              "Text_3": "Yaratilgan sanasi",
+              "Text_4": "Raqami",
+              "Text_5": "Muddati",
+              "Text_6": "Imzolangan sanasi",
+              "Text_7": "Buyurtmachi",
+              "Text_8": "Imzolagan sanasi",
+              "Text_9": "Holati",
+              "Text_10": "Harakat"
           }
       },
       "Application": {
           "Title": "Arizalar",
           "Component": {
               "PageTitle": "Shartnoma yaratish",
-              "SelectContract": "Shartnoma Tanglang"
+              "SelectContract": "Shartnoma Tanglang",
+              "Text_1": "Ariza nomi",
+              "Text_2": "Ariza",
+              "Text_3": "Yaratilgan sanasi",
+              "Text_4": "Raqami",
+              "Text_5": "Harakat",
+              "Text_6": "Yaratilgan sanasi",
+              "Text_7": "Imzolangan sanasi",
+              "Text_8": "Muddati"
           }
       },
       "Appeal": {
@@ -93,7 +111,10 @@
           "Title": "PDF tahrirlash"
       },
       "Tahrirchi": {
-          "Title": "Imlo xato"
+          "Title": "Tahrirchi",
+          "Translate": "Sayqaylash",
+          "Progress": "Jarayonda...",
+          "Add_Text": "Matn kirgizing..."
       },
       "OneNote": {
           "Title": "One Note"
@@ -101,7 +122,16 @@
       "Translater": {
           "Title": "Tilmoch",
           "PageTitle": "Hujjatni (docx) pdf ga o'girish",
-          "Convert_button": "O'girish"
+          "Add_Text": "Matn kirgizing...",
+          "Translate_Text": "Tarjima qilinadigan matn",
+          "Translated_Text": "Tarjima qilingan matn",
+          "To_Lang": "Tarjima qilinadigan til",
+          "Convert_button": "O'girish",
+          "Translate": "Tarjima qilish",
+          "Progress": "Jarayonda..."
+      },
+      "Manual": {
+          "Title": "Qo'llanma"
       }
   },
   "General": {
@@ -185,23 +215,39 @@
               "Price_select": "Tanlash",
               "Price_one": {
                   "Price_one_title": "START ",
-                  "Price_one_content_one": "50 dona hujjatlar",
-                  "Price_one_content_two": "50 dona sms-xabarnoma"
+                  "Price_one_content_one": "SHARTLARI:",
+                  "Price_one_content_two": "50 ta hujjatlarni yaratish",
+                  "Price_one_content_three": "50 ta sms-xabarnoma yuborish",
+                  "Price_one_content_four": "50 ta AI Yuristga murojaat",
+                  "Price_one_content_five": "50 ta OCR xizmati",
+                  "Price_one_content_six": "10 ta hujjatlarni Qulflash xizmati"
               },
               "Price_two": {
                   "Price_two_title": "BIZNES ",
-                  "Price_two_content_one": "250 dona hujjatlar",
-                  "Price_two_content_two": "250 dona sms-xabarnoma"
+                  "Price_two_content_one": "SHARTLARI:",
+                  "Price_two_content_two": "200 ta hujjatlarni yaratish",
+                  "Price_two_content_three": "200 ta sms-xabarnoma yuborish",
+                  "Price_two_content_four": "100 ta AI Yuristga murojaat",
+                  "Price_two_content_five": "100 ta OCR xizmati",
+                  "Price_two_content_six": "50 ta hujjatlarni Qulflash xizmati"
               },
               "Price_three": {
                   "Price_three_title": "SENAT ",
-                  "Price_three_content_one": "500 dona hujjatlar",
-                  "Price_three_content_two": "500 dona sms-xabarnoma"
+                  "Price_three_content_one": "SHARTLARI:",
+                  "Price_three_content_two": "500 ta hujjatlarni yaratish",
+                  "Price_three_content_three": "500 ta sms-xabarnoma yuborish",
+                  "Price_three_content_four": "300 ta AI Yuristga murojaat",
+                  "Price_three_content_five": "250 ta OCR xizmati",
+                  "Price_three_content_six": "100 ta hujjatlarni Qulflash xizmati"
               },
               "Price_four": {
                   "Price_four_title": "President",
-                  "Price_four_content_one": "1000 dona hujjatlar",
-                  "Price_four_content_two": "1000 dona sms-xabarnoma"
+                  "Price_four_content_one": "SHARTLARI:",
+                  "Price_four_content_two": "1000 ta hujjatlarni yaratish",
+                  "Price_four_content_three": "1000 ta sms-xabarnoma yuborish",
+                  "Price_four_content_four": "1000 ta AI Yuristga murojaat",
+                  "Price_four_content_five": "Cheksiz OCR xizmati",
+                  "Price_four_content_six": "Cheksiz hujjatlarni Qulflash xizmati"
               }
           },
           "Banner": {

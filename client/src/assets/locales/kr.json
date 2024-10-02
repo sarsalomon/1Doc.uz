@@ -62,15 +62,30 @@
           "Share_button": "Юбориш"
       },
       "PdfEditor": {
-          "Title": "PDF tahrirlash"
+          "Title": "ПДФ таҳрирлаш"
       },
       "Tahrirchi": {
-          "Title": "Imlo xato"
+        "Title": "Таҳрирчи",
+        "Translate": "Сайқайлаш",
+        "Progress": "Жараёнда...",
+        "Add_Text": "Матн киргизинг..."
       },
       "OneNote": {
-          "Title": "One Bildirgi"
+          "Title": "One Note"
+      },
+      "Translater": {
+            "Title": "Тилмоч",
+          "PageTitle": "Ҳужжатни (доcх) пдф га ўгириш",
+          "Add_Text": "Матн киргизинг...",
+          "Translate_Text": "Таржима қилинадиган матн",
+          "Translated_Text": "Таржима қилинган матн",
+          "To_Lang": "Таржима қилинадиган тил",
+          "Convert_button": "Ўгириш",
+          "Translate": "Таржима қилиш",
+          "Progress": "Жараёнда..."
       }
   },
+  
   "General": {
       "Home": {
           "Navbar": {

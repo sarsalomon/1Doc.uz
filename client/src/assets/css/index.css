@@ -17,6 +17,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
 }
 .sidebar-nav .right {
     justify-content: flex-end;
@@ -35,7 +36,7 @@
     text-decoration: none;
     color: var(--primary-color);
     font-weight: bold;
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     margin-left: 60px;
 }
 .sidebar-nav .right .theme:hover .btn-outline-primary {
@@ -64,7 +65,7 @@
     color: var(--primary-color);
     font-size: 24px;
     margin: 0;
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     font-weight: bold;
 }
 
@@ -200,7 +201,7 @@
     background: #6c5ecf;
 }
 #sidebar .sidebar-link.is-active {
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 #sidebar .sidebar.collapse {
     width: 90px;
@@ -245,8 +246,8 @@
     margin-top: 26px;
 }
 #sidebar .side-menu svg {
-    width: 30px;
-    padding: 8px;
+    width: 60px;
+    padding: 12px;
     border-radius: 10px;
     background-color: var(--button-bg);
     flex-shrink: 0;
@@ -1241,7 +1242,7 @@
     width: 183px;
     height: 80px;
     font-size: 14px;
-    font-family: "Gilroy-Bold ☞", sans-serif;
+    font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI ☞', Roboto, sans-serif !important;
     text-align: left;
     display: flex;
     flex-direction: column;
@@ -1558,7 +1559,7 @@
     height: 200px;
 }
 .imzo-page .top-bar span.title {
-    font-family: "Gilroy-Bold ☞", sans-serif;
+    font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI ☞', Roboto, sans-serif !important;
     font-weight: bold;
     font-size: 18px;
 }
@@ -1617,7 +1618,7 @@
 }
 .imzo-page .signature-info-wrapper .signature-info .btns button {
     font-weight: bold;
-    font-family: "Gilroy-Bold ☞", sans-serif;
+    font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI ☞', Roboto, sans-serif !important;
     padding: 10px 20px;
     width: 200px;
     border-radius: 4px;
@@ -1658,7 +1659,7 @@
     height: 300px;
 }
 .sms-page .top-bar span.title {
-    font-family: "Gilroy-Bold ☞", sans-serif;
+    font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI ☞', Roboto, sans-serif !important;
     font-weight: bold;
     font-size: 18px;
 }
@@ -1763,7 +1764,7 @@
 }
 .sms-page .message-wrapper .message .btns button {
     font-weight: bold;
-    font-family: "Gilroy-Bold ☞", sans-serif;
+    font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI ☞', Roboto, sans-serif !important;
     padding: 10px 20px;
     width: 200px;
     border-radius: 4px;
@@ -1840,7 +1841,7 @@
     flex-direction: column;
 }
 .locker-page .locker-title {
-    font-family: "Gilroy-Bold ☞", sans-serif;
+    font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI ☞', Roboto, sans-serif !important;
     font-weight: bold;
     font-size: 24px;
     text-align: center;
@@ -2131,7 +2132,7 @@ header .header-content {
     padding-right: 100px;
 }
 header .header-content .header-title {
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     font-weight: bold;
     font-size: 42px;
     width: 654px;
@@ -2390,7 +2391,7 @@ section.info-content {
 }
 section.info-content h3 {
     font-size: 24px;
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     text-align: center;
 }
 section.info-content a {
@@ -2458,7 +2459,7 @@ section.second-slider .carousel-item h1 {
     text-align: center;
     margin-bottom: 40px;
     height: 60px;
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 section.second-slider .carousel-item .item-content {
     margin-bottom: 100px;
@@ -2578,7 +2579,7 @@ section.signing-types h2 {
     text-align: center;
     font-weight: bold;
     font-size: 2rem;
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 section.signing-types p {
     text-align: center;
@@ -2623,7 +2624,7 @@ section.companies h2 {
     font-size: 34px;
     font-weight: bold;
     margin-bottom: 40px;
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 section.companies .companies-content {
     width: 2050px;
@@ -2654,7 +2655,7 @@ section.pricing {
 section.pricing h2 {
     font-size: 34px;
     font-weight: bold;
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 section.pricing .pricing-content {
     margin-top: 40px;
@@ -2680,12 +2681,12 @@ section.pricing .pricing-content .price-box p:nth-child(1) {
 section.pricing .pricing-content .price-box h4 {
     font-size: 24px;
     font-weight: bold;
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 section.pricing .pricing-content .price-box h3 {
     font-size: 32px;
     color: var(--primary-color);
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 section.pricing .pricing-content .price-box h3 span {
     font-size: 18px;
@@ -2705,7 +2706,7 @@ section.pricing .pricing-content .price-box .btn {
     width: 100%;
     height: 50px;
     margin-top: 29px;
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     font-weight: bold;
     font-size: 18px;
 }
@@ -2758,7 +2759,7 @@ footer h4 {
     font-weight: bold;
     font-size: 24px;
     margin: 0;
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 footer ul {
     list-style-type: none;
@@ -2821,7 +2822,7 @@ section.tabs ul.nav li button {
     height: 80px;
     padding: 0px 40px;
     font-size: 18px;
-    font-family: "Gilroy-Bold ☞", sans-serif !important;
+      font-family: 'Adobe-Clean-UX', 'Adobe-Clean', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     font-weight: bold;
     text-transform: uppercase;
     display: flex;

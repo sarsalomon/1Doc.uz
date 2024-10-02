@@ -65,10 +65,24 @@
           "Title": "PDF tahrirlash"
       },
       "Tahrirchi": {
-          "Title": "Imlo xato"
+        "Title": "Tahrirchi",
+        "Translate": "Sayqaylash",
+        "Progress": "Jarayonda...",
+        "Add_Text": "Matn kirgizing..."
       },
       "OneNote": {
           "Title": "One Bildirgi"
+      },
+      "Translater": {
+          "Title": "Tilmoch",
+          "PageTitle": "Hujjatni (docx) pdf ga o'girish",
+          "Add_Text": "Matn kirgizing...",
+          "Translate_Text": "Tarjima qilinadigan matn",
+          "Translated_Text": "Tarjima qilingan matn",
+          "To_Lang": "Tarjima qilinadigan til",
+          "Convert_button": "O'girish",
+          "Translate": "Tarjima qilish",
+          "Progress": "Jarayonda..."
       }
   },
   "General": {
