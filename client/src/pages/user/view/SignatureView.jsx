@@ -45,20 +45,27 @@ const UserSignatureView = observer(() => {
 
     const onDrop = useCallback(async (acceptedFiles) => {
         try {
-            const file = acceptedFiles[0];
-
+            const allowedTypes = ["application/docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+    
+            const acceptedFile = acceptedFiles[0];
+            if (!allowedTypes.includes(acceptedFile.type)) {
+                showToast(t("File must be in DOCX format"));
+                setFileProgress(false);
+                return;
+            }
+    
             const formData = new FormData();
-            formData.append("file", file);
-
-            await addDataSignatureDraft(formData).then((data) => {
-                setFileId(data);
-                setFile(file);
-                setPdfFile(`${import.meta.env.VITE_API_URL}draft/signature/pdf/${data}`);
-            });
+            formData.append("file", acceptedFile);
+    
+            const data = await addDataSignatureDraft(formData);
+            setFileId(data);
+            setFile(acceptedFile);
+            setPdfFile(`${import.meta.env.VITE_API_URL}draft/signature/pdf/${data}`);
         } catch (error) {
             console.error("Error uploading document:", error);
         }
     }, []);
+    
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
@@ -75,7 +82,6 @@ const UserSignatureView = observer(() => {
             }
         }
     };
-
 
     const ConfirmSubmit = (id) => {
         confirmAlert({
@@ -223,15 +229,12 @@ const UserSignatureView = observer(() => {
                 <title>{t("User:Signature:Title")}</title>
             </Helmet>
             <div className="imzo-page">
-             
-                        <button className="upload-btn btn btn-outline-primary" aria-label="Upload Button"
-                        onClick={() => setShow(true)}
-                        >
-                        <LiaFileSignatureSolid className='drop-images'/>
-                    
-                            <span>Yuklash</span>
-                        </button>
-                
+                <button className="upload-btn btn btn-outline-primary" aria-label="Upload Button" onClick={() => setShow(true)}>
+                    <LiaFileSignatureSolid className="drop-images" />
+
+                    <span>Yuklash</span>
+                </button>
+
                 <table className="table table-bordered mt-4">
                     <thead>
                         <tr>
@@ -308,25 +311,20 @@ const UserSignatureView = observer(() => {
                 </button>
             </div>
 
-            <Modal className='sigNmodal' show={show} onHide={handleClose} dialogClassName="Signature-modal-90w">
+            <Modal className="sigNmodal" show={show} onHide={handleClose} dialogClassName="Signature-modal-90w">
                 <Modal.Header closeButton className=" closeHeader">
-                    <Modal.Title id="example-custom-modal-styling-title">Imzolash oynasi
-                    </Modal.Title>
-                    <button className="closeBtn btn " onClick={handleClose}>X</button>
+                    <Modal.Title id="example-custom-modal-styling-title">Imzolash oynasi</Modal.Title>
+                    <button className="closeBtn btn " onClick={handleClose}>
+                        X
+                    </button>
                 </Modal.Header>
                 <Modal.Body>
                     <div>
                         <h1>Hujjatni yuklang (.docx)</h1>
                         {pdfFile == "" ? (
-                            <button
-                                {...getRootProps()}
-                             className="upload-btn btn btn-outline-primary" aria-label="Upload Button"
-                            >   
-                                <input {...getInputProps()}
-                                 className='upload-input' type="file"
-                                accept=".jpg, .png"
-                                 />
-                                 <LiaFileSignatureSolid className='drop-images'/>
+                            <button {...getRootProps()} className="upload-btn btn btn-outline-primary" aria-label="Upload Button">
+                                <input {...getInputProps()} className="upload-input" type="file" accept=".docx" />
+                                <LiaFileSignatureSolid className="drop-images" />
                                 {isDragActive ? <p>{t("Fayllarni bu erga tashlang...")}</p> : <p>{t("Fayllarni bu erga tashlang yoki fayllarni tanlash uchun bosing")}</p>}
                             </button>
                         ) : (
@@ -335,7 +333,7 @@ const UserSignatureView = observer(() => {
                     </div>
                     <Container fluid>
                         <Row>
-                            <Col >
+                            <Col>
                                 <div>
                                     {pdfFile === "" ? null : (
                                         <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
@@ -388,7 +386,7 @@ const UserSignatureView = observer(() => {
                                             </div>
                                         ) : (
                                             <div className="d-flex justify-content-center align-items-center mt-3">
-                                                <Button variant="primary" style={{ width: "100%" }} onClick={ConfirmSubmit}>
+                                                <Button variant="primary" style={{ width: "100%" }} onClick={handleSubmit}>
                                                     {t("Yaratish")}
                                                 </Button>
                                             </div>

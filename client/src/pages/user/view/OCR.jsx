@@ -1,5 +1,5 @@
 import Tesseract from "tesseract.js";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
@@ -23,7 +23,7 @@ const UserOcrView = observer(() => {
         const selectedFile = e.target.files[0];
         if (!selectedFile) return;
 
-        const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+        const allowedTypes = ["image/jpeg", "image/png"];
         if (!allowedTypes.includes(selectedFile.type)) {
             setLoading(false);
             setError(t("User:InvalidFileType"));
@@ -73,7 +73,7 @@ const UserOcrView = observer(() => {
         }
     };
 
-    const handleExtractText = () => {
+    const handleExtractText = useCallback(() => {
         if (!ocrText) {
             toast.error(t("User:NoTextError"), {
                 position: "bottom-right",
@@ -111,7 +111,7 @@ const UserOcrView = observer(() => {
                     progress: undefined,
                 });
             });
-    };
+    }, [ocrText]);
 
     const handleDownloadText = async () => {
         if (!ocrText) {
@@ -157,31 +157,32 @@ const UserOcrView = observer(() => {
                 <title>{t("User:OCR:Title")}</title>
             </Helmet>
             <div className="ocr-page">
-                
-                <button className="upload-btn btn           
-                    btn-outline-primary">
-                    <IoMdImages className='drop-images'/>
-                    {t("User:FileUpload")} (.jpg, .png)
-                    <input className='upload-input' type="file" onChange={handleFileChange} disabled={loading} accept=".jpg, .png"/>
+                <button
+                    className="upload-btn btn           
+                    btn-outline-primary"
+                >
+                    <IoMdImages className="drop-images" />
+                    {file ? <span>{file.name}</span> : <span>{t("User:FileUpload")} (.jpg, .png)</span>}
+                    <input className="upload-input" type="file" onChange={handleFileChange} disabled={loading} accept=".jpg, .png" />
                 </button>
 
                 <div className="ocr-translate">
-                    
-                        <Form.Select
+                    <Form.Select
                         className="custom-select"
-                            onChange={(e) => {
-                                setOcrLanguage(e.target.value);
-                            }}>
-                            <option key="empty" value="">
-                                Tilni tanglang
+                        onChange={(e) => {
+                            setOcrLanguage(e.target.value);
+                        }}
+                    >
+                        <option key="empty" value="">
+                            Tilni tanglang
+                        </option>
+                        {language_ocr.map((language) => (
+                            <option key={language.id} value={language.id}>
+                                {language.Title}
                             </option>
-                            {language_ocr.map((language) => (
-                                <option key={language.id} value={language.id}>
-                                    {language.Title}
-                                </option>
-                            ))}
-                        </Form.Select>
-                    
+                        ))}
+                    </Form.Select>
+
                     <button className="convert-btn btn btn-primary" onClick={handleConvertClick} disabled={loading || !file}>
                         {t("User:OCR:Convert_button")}
                     </button>

@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet-async";
 import { Context } from "../../../main";
 import { fileConvert } from "../../../function/http/ConvertAPI";
 import { MdOutlineUploadFile } from "react-icons/md";
+import { Button } from "react-bootstrap";
 
 const UserConvertView = observer(() => {
     const { t } = useTranslation();
@@ -16,13 +17,11 @@ const UserConvertView = observer(() => {
     const [progress, setProgress] = useState(false);
     const [progressValue, setProgressValue] = useState(0);
 
-    
-
     const selectFile = (e) => {
         setFile(e.target.files[0]);
     };
 
-    const showToast = (message, type = 'error') => {
+    const showToast = (message, type = "error") => {
         toast[type](message, {
             position: "bottom-right",
             autoClose: 5000,
@@ -36,35 +35,37 @@ const UserConvertView = observer(() => {
 
     const ConvertFile = useCallback(async () => {
         if (file && !progress) {
-          setProgress(true);
-          setProgressValue(0); // Сбрасываем прогресс в 0
-    
-          const allowedTypes = ["application/docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
-         
-          if (!allowedTypes.includes(file.type)) {
-            showToast(t("File must be in DOCX format"));
-            setProgress(false);
-            return;
-          }
+            setProgress(true);
+            setProgressValue(0);
+
+            const allowedTypes = ["application/docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+
+            if (!allowedTypes.includes(file.type)) {
+                showToast(t("File must be in DOCX format"));
+                setProgress(false);
+                return;
+            }
 
             const formData = new FormData();
             formData.append("file", file);
             const simulateProgress = () => {
                 let value = 0;
                 const interval = setInterval(() => {
-                  value += 10;
-                  setProgressValue(value);
-                  if (value >= 100) {
-                    clearInterval(interval);
-                  }
-                }, 300); // Каждые 300 мс добавляем 10% к прогрессу
-              };
+                    value += 10;
+                    setProgressValue(value);
+                    if (value >= 100) {
+                        clearInterval(interval);
+                    }
+                }, 300);
+            };
 
             try {
                 simulateProgress();
 
                 const data = await fileConvert(formData);
-                setFile(null); // Reset file input
+                setFile(null);
+                setProgress(false);
+                setProgressValue(0);
                 window.open(data, "_blank");
             } catch (e) {
                 showToast(e.response?.data?.message || t("An error occurred"));
@@ -72,9 +73,9 @@ const UserConvertView = observer(() => {
                 setProgress(false);
             }
         } else {
-            showToast(t("Please select a file"), 'error');
+            showToast(t("Please select a file"), "error");
         }
-    }, [file, progress, t]);
+    }, [file, progress]);
 
     useEffect(() => {
         const keyDownHandler = (event) => {
@@ -95,32 +96,24 @@ const UserConvertView = observer(() => {
             <div className="locker-container locker-page">
                 <h3 className="locker-title">{t("User:Translater:PageTitle")}</h3>
 
-                <button className="upload-btn btn btn-outline-primary">
-                    <MdOutlineUploadFile className='docImg'/>
-                    {t("User:FileUploads")} (.docx)
-                    <input
-                     className='upload-input'
-                     type="file"
-                     onChange={selectFile} 
-                     accept=".docx" />
-                </button>
+                <Button variant="none" className="upload-btn btn btn-outline-primary">
+                    <MdOutlineUploadFile className="docImg" />
+                    {file ? <span>{file.name}</span> : <span>{t("User:FileUploads") + " (.docx)"}</span>}
+                    <input className="upload-input" type="file" onChange={selectFile} accept=".docx" />
+                </Button>
 
                 <div className="locker-form-container">
-                    <button
-                        className={`locker-btn btn btn-primary ${progress ? 'in-progress' : ''}`}
-                        onClick={ConvertFile}
-                        disabled={!file || progress}
-                    >
-                        <span className="content">
-                        {progress ? t("User:Locker:InProgress") : t("User:Translater:Convert_button")}
-                        </span>
+                    <Button className={`locker-btn btn btn-primary ${progress ? "in-progress" : ""}`} onClick={ConvertFile} disabled={!file || progress}>
+                        <span className="content">{progress ? t("User:Locker:Progress") : t("User:Translater:Convert_button")}</span>
                         <span className="value"></span>
-                        <span className="progress"   
-                        style={{ 
-                            width: `${progressValue}%`, 
-                            display: progressValue > 0 && progressValue < 100 ? 'block' : 'none' 
-                        }}></span>
-                    </button>
+                        <span
+                            className="progress"
+                            style={{
+                                width: `${progressValue}%`,
+                                display: progressValue > 0 && progressValue < 100 ? "block" : "none",
+                            }}
+                        ></span>
+                    </Button>
                 </div>
             </div>
             <ToastContainer />

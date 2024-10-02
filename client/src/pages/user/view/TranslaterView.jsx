@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect, useRef, useCallback } from "react";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../../main";
 import { useTranslation } from "react-i18next";
@@ -54,36 +54,10 @@ const UserTranslaterView = observer(() => {
                 return;
             }
 
-            if (fromLang === "") {
-                toast.error(t("Please select the source language"), {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                });
-                return;
-            }
-
-            if (toLang === "") {
-                toast.error(t("Please select the target language"), {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                });
-                return;
-            }
-
             setProgress(true);
 
             const formData = new FormData();
             formData.append("text", text);
-            formData.append("fromLang", fromLang);
-            formData.append("toLang", toLang);
 
             const data = await translateTahrirchi(formData);
             const sentences = data?.chunks[0]?.sentences || [];
@@ -105,7 +79,7 @@ const UserTranslaterView = observer(() => {
         }
     };
 
-    const handleCopy = () => {
+    const handleCopy = useCallback(() => {
         if (endText) {
             navigator.clipboard.writeText(endText);
             toast.success(t("Text copied to clipboard"), {
@@ -117,7 +91,7 @@ const UserTranslaterView = observer(() => {
                 draggable: true,
             });
         }
-    };
+    }, [endText]);
 
   
     return (
@@ -132,16 +106,7 @@ const UserTranslaterView = observer(() => {
                 <Row className='translate-row'>
                     <Col className='translate-col'>
                         <Form class='form'>
-                            <Form.Select className="custom-select"  value={fromLang} onChange={(e) => setFromLang(e.target.value)}>
-                                <option value="uzn_Latn">O'zbek</option>
-                                <option value="uzn_Cyrl">Ўзбек</option>
-                                <option value="rus_Cyrl">Русский</option>
-                                <option value="eng_Latn">English</option>
-                                <option value="kaa_Latn">Qaraqolpoq</option>
-                                <option value="kaa_Cyrl">Қарақолпоқ</option>
-                            </Form.Select>
-                            <Form.Group className="mt-3" rows="10" placeholder={t("User:Translater:Add_Text")}>
-                              
+                            <Form.Group rows="10" placeholder={t("User:Translater:Add_Text")}>
                                <Form.Control 
                                     className="custom-textarea active:outline-none focus:outline-none"
                                     as="textarea" 
@@ -157,17 +122,7 @@ const UserTranslaterView = observer(() => {
                     </Col>
                     <Col className='translate-col'>
                         <Form class='form'>
-                            <Form.Select className="custom-select" value={toLang} onChange={(e) => setToLang(e.target.value)}>
-                                <option value="">{t("User:Translater:To_Lang")}</option>
-                                <option value="uzn_Latn">O'zbek</option>
-                                <option value="uzn_Cyrl">Ўзбек</option>
-                                <option value="rus_Cyrl">Русский</option>
-                                <option value="eng_Latn">English</option>
-                                <option value="kaa_Latn">Qaraqolpoq</option>
-                                <option value="kaa_Cyrl">Қарақолпоқ</option>
-                            </Form.Select>
-                            <Form.Group className="mt-3" rows="10">
-                                {/* <Form.Label>{t("User:Translater:Translate_Text")}</Form.Label> */}
+                            <Form.Group rows="10">
                                 <InputGroup>
                                     <Form.Control 
                                     className="custom-textarea active:outline-none focus:outline-none"

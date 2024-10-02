@@ -105,7 +105,8 @@
           "RePassword_number_input": "Parolni qayta kiriting",
           "Block_button": "Quflash",
           "Phone_number_input": "Telefon raqam",
-          "Share_button": "Yuborish"
+          "Share_button": "Yuborish",
+          "Progress": "Jarayonda"
       },
       "PdfEditor": {
           "Title": "PDF tahrirlash"

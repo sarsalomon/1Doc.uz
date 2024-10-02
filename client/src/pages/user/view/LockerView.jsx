@@ -8,6 +8,7 @@ import { Context } from "../../../main";
 import { addDataLocker } from "../../../function/http/LockerAPI";
 
 import { MdOutlineUploadFile } from "react-icons/md";
+import { Button } from "react-bootstrap";
 
 const UserLockerView = observer(() => {
     const { user } = useContext(Context);
@@ -17,18 +18,29 @@ const UserLockerView = observer(() => {
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
     const [progress, setProgress] = useState(false);
-    const [progressValue, setProgressValue] = useState(0); // State for progress value
+    const [progressValue, setProgressValue] = useState(0);
 
     const selectFile = (e) => {
         setFile(e.target.files[0]);
     };
 
+    const showToast = (message, type = "error") => {
+        toast[type](message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    };
+
     const LockFile = useCallback(async () => {
         if (file && password && rePassword && password === rePassword && !progress) {
             setProgress(true);
-            setProgressValue(0); // Reset progress value
+            setProgressValue(0);
 
-            // Проверка MIME-типа файла
             const allowedTypes = ["application/pdf"];
             if (!allowedTypes.includes(file.type)) {
                 toast.error("Файл должен быть формата pdf", {
@@ -48,55 +60,39 @@ const UserLockerView = observer(() => {
             formData.append("file", file);
             formData.append("password", password);
 
-            // Simulating progress
             const simulateProgress = () => {
                 let value = 0;
                 const interval = setInterval(() => {
-                    value += 10; // Increment progress by 10%
+                    value += 10;
                     setProgressValue(value);
                     if (value >= 100) {
-                        clearInterval(interval); // Stop when 100% is reached
+                        clearInterval(interval);
                     }
-                }, 300); // Increment every 300 ms
+                }, 300);
             };
 
             try {
-                simulateProgress(); // Start simulating progress
+                simulateProgress();
 
-                // Simulate file processing time
-                await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulating 3 seconds delay
+                await new Promise((resolve) => setTimeout(resolve, 3000));
 
                 const data = await addDataLocker(formData);
+
                 setFile(null);
                 setPassword("");
                 setRePassword("");
+                setProgress(false);
+                setProgressValue(0);
                 window.open(data, "_blank");
             } catch (e) {
-                toast.error(e.response?.data?.message || "An error occurred", {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                showToast(e.response?.data?.message || t("An error occurred"));
             } finally {
                 setProgress(false);
             }
         } else {
-            toast.error(t("User:Locker:Error_Message"), {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-            setProgress(false);
+            showToast(t("Please select a file"), "error");
         }
-    }, [file, password, rePassword, progress, t]);
+    }, [file, password, rePassword, progress]);
 
     useEffect(() => {
         const keyDownHandler = (event) => {
@@ -115,58 +111,47 @@ const UserLockerView = observer(() => {
     return (
         <>
             <Helmet>
-                <title>{t("User:Locker:Title")}</title> 
+                <title>{t("User:Locker:Title")}</title>
             </Helmet>
             <div className="locker-container">
-                <div className='locker-drop'>
+                <div className="locker-drop">
                     <h3 className="locker-title">{t("User:Locker:PageTitle")}</h3>
 
-                    <button className="upload-btn btn btn-outline-primary">
-                        <MdOutlineUploadFile className='docImg'/>
-                        {t("User:FileUploads")} (.pdf)
-                        <input className='upload-input' type="file" onChange={selectFile} accept=".pdf" />
-                    </button>
+                    <Button variant="none" className="upload-btn btn btn-outline-primary">
+                        <MdOutlineUploadFile className="docImg" />
+                        {file ? <span>{file.name}</span> : <span>{t("User:FileUploads") + " (.pdf)"}</span>}
+                        <input className="upload-input" type="file" onChange={selectFile} accept=".pdf" />
+                    </Button>
                 </div>
-                    <div className="locker-form-container">
-                        <h5 className="locker-form-label">{t("User:Locker:Text_two")}</h5>
+                <div className="locker-form-container">
+                    <h5 className="locker-form-label" style={{ color: "black" }}>
+                        {t("User:Locker:Text_two")}
+                    </h5>
 
-                        <input 
-                            className="locker-input" 
-                            type="password" 
-                            placeholder={t("User:Locker:Password_number_input")} 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                        />
-                        <input 
-                            className="locker-input" 
-                            type="password" 
-                            placeholder={t("User:Locker:RePassword_number_input")} 
-                            value={rePassword} 
-                            onChange={(e) => setRePassword(e.target.value)} 
-                        />
+                    <input className="locker-input" type="password" placeholder={t("User:Locker:Password_number_input")} value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input className="locker-input" type="password" placeholder={t("User:Locker:RePassword_number_input")} value={rePassword} onChange={(e) => setRePassword(e.target.value)} />
 
-                        <button
-                            className={`locker-btn btn btn-primary ${progress ? 'in-progress' : ''}`}
-                            onClick={LockFile}
-                            disabled={!file || progress}
+                    <Button
+                        className={`locker-btn btn btn-primary ${progress ? "in-progress" : ""}`}
+                        onClick={LockFile}
+                        disabled={!file || progress}
+                        style={{
+                            width: "80%",
+                            height: "50px",
+                        }}
+                    >
+                        <span className="content">{progress ? t("User:Locker:Progress") : t("User:Locker:Block_button")}</span>
+                        <span className="value"></span>
+                        <span
+                            className="progress"
                             style={{
-                                width:'80%',
-                                height:'50px'
+                                width: `${progressValue}%`,
+                                display: progressValue > 0 && progressValue < 100 ? "block" : "none",
                             }}
-                        >
-                            <span className="content">
-                                {progress ? t("User:Locker:InProgress") : t("User:Locker:Block_button")}
-                            </span>
-                            <span className="value"></span>
-                            <span 
-                            className="progress" 
-                            style={{ 
-                                width: `${progressValue}%`, 
-                                display: progressValue > 0 && progressValue < 100 ? 'block' : 'none' 
-                            }}></span>
-                        </button>
-                    </div>
+                        ></span>
+                    </Button>
                 </div>
+            </div>
             <ToastContainer />
         </>
     );

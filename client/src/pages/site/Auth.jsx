@@ -1,23 +1,22 @@
-import { observer } from "mobx-react-lite"
-import { useContext, useEffect, useState } from "react"
-import { Button, Form, Modal, Tab, Tabs } from "react-bootstrap"
-import { Helmet } from "react-helmet-async"
-import { useTranslation } from "react-i18next"
-import { Link, useNavigate } from "react-router-dom"
-import { toast, ToastContainer } from "react-toastify"
+import { observer } from "mobx-react-lite";
+import { useContext, useEffect, useState } from "react";
+import { Button, Form, Modal, Tab, Tabs } from "react-bootstrap";
+import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
-import { Context } from "../../main"
+import { Context } from "../../main";
 
-import { registration, signIn } from "../../function/http/UserApi"
-import { ADMIN_DASHBOARD_ROUTE, HOME_ROUTE, USER_DASHBOARD_ROUTE } from "../../utils/consts"
-
+import { registration, signIn } from "../../function/http/UserApi";
+import { ADMIN_DASHBOARD_ROUTE, HOME_ROUTE, USER_DASHBOARD_ROUTE } from "../../utils/consts";
 
 const Auth = observer(() => {
     const { user } = useContext(Context);
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const [key, setKey] = useState('first');
+    const [key, setKey] = useState("first");
 
     const [show, setShow] = useState(false);
     const [name, setName] = useState("");
@@ -29,6 +28,18 @@ const Auth = observer(() => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const showToast = (message, type) => {
+        toast[type](t(`${message}`), {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    };
 
     useEffect(() => {
         const redirectToDashboard = () => {
@@ -51,40 +62,22 @@ const Auth = observer(() => {
     const register = async () => {
         try {
             if (password.length < 7 || repeatPassword.length < 7) {
-                toast.error(t("General:Auth:Registration:PasswordLengthError"), {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                showToast("General:Auth:Registration:PasswordLengthError", "error");
                 return;
             }
 
             if (password !== repeatPassword) {
-                toast.error(t("General:Auth:Registration:RePasswordError"), {
-                    position: "bottom-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                });
+                showToast("General:Auth:Registration:RePasswordError", "error");
                 return;
             }
 
             const formData = new FormData();
-            formData.append("name", name);
-            formData.append("surname", surname);
+            formData.append("name", name == "" ? "" : name);
+            formData.append("surname", surname == "" ? "" : surname);
             formData.append("phone", phone);
             formData.append("password", password);
             formData.append("whois", whois ? "Lawyer" : "User");
-            
+
             let data = await registration(formData);
 
             if (data) {
@@ -93,31 +86,14 @@ const Auth = observer(() => {
                 navigate(USER_DASHBOARD_ROUTE);
             }
         } catch (e) {
-            toast.error(t(e.response?.data?.message), {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            showToast(e.response?.data?.message, "error");
+            return;
         }
     };
 
     const login = async () => {
         if (!phone || !password) {
-            toast.error(t("Please enter valid phone number and password"), {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            showToast("lease enter valid phone number and password", "error");
             return;
         }
 
@@ -135,16 +111,8 @@ const Auth = observer(() => {
                 }
             }
         } catch (e) {
-            toast.error(t(e.response?.data?.message), {
-                position: "bottom-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-            });
+            showToast(e.response?.data?.message, "error");
+            return;
         }
     };
 
@@ -173,71 +141,56 @@ const Auth = observer(() => {
                 <title>{t("General:Auth:Registration:PageTitle")}</title>
             </Helmet>
             <div>
-                {/* <header>
-                    <nav>
-                        <Link to={HOME_ROUTE} className="logo">
-                            <img src={Logo_Light} alt="1doc.uz Logo" />
-                            <h1>1doc.uz</h1>
-                        </Link>
-                    </nav>
-                </header> */}
-
                 <main>
                     <div className="row">
-                    <div className="col-md-8 main-img">
+                        <div className="col-md-8 main-img"></div>
+
+                        <div className="col-md-4 main-content">
+                            <h2 className="my-3">Ro'yxatdan o'tish</h2>
+                            <form onSubmit={handleSubmit}>
+                                <Tabs id="controlled-tab-example" activeKey={key} onSelect={(k) => setKey(k)} className="mb-3">
+                                    {/* First Tab */}
+                                    <Tab eventKey="first" title="Kirish">
+                                        <div className="form-group">
+                                            <label htmlFor="phoneInput">Pochta / Telefon raqamingizni kiriting</label>
+                                            <input type="text" className="form-control" id="phoneInput" placeholder="+998 xx xxx xx xx" maxLength={9} minLength={9} onChange={(e) => setPhone(e.target.value)} />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="passwordInput">Parolni kiriting</label>
+                                            <input type="password" className="form-control" id="passwordInput" placeholder="********" value={password} onChange={(e) => setPassword(e.target.value)} />
+                                            <label htmlFor="repasswordInput">Parolni takrorlang</label>
+                                            <input type="password" className="form-control" id="repasswordInput" placeholder="********" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} />
+                                            <div className="d-flex justify-content-center align-items-center form-group">
+                                                <div className="form-check">
+                                                    <input type="checkbox" className="form-check-input" id="whoisCheck" checked={whois} onChange={handleCheckboxChange} />
+                                                    <label className="form-check-label" htmlFor="whoisCheck">
+                                                        Yuridik shaxsman
+                                                    </label>
+                                                </div>
+
+                                                <button type="button" className="forgot-pass btn btn-link" onClick={handleShow}>
+                                                    Akkauntim bor
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </Tab>
+
+                                    {/* Second Tab */}
+                                    <Tab eventKey="second" title="Kalit orqali kirish">
+                                        <div className="form-group">
+                                            <label htmlFor="repeatPasswordInput">Kalitni kiriting</label>
+                                            <input type="password" className="form-control" id="repeatPasswordInput" placeholder="ЭЦП" onChange={(e) => setRepeatPassword(e.target.value)} />
+                                        </div>
+                                    </Tab>
+                                </Tabs>
+                                <div className="form-group">
+                                    <button type="submit" className="btn btn-primary">
+                                        RO’YXATDAN O’TISH
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-
-                    <div className="col-md-4 main-content">
-                    <h2 className='my-3'>Ro'yxatdan o'tish</h2>
-                    <form 
-                    onSubmit={handleSubmit}>
-                        <Tabs
-                        id="controlled-tab-example"
-                        activeKey={key}
-                        onSelect={(k) => setKey(k)}
-                        className="mb-3"
-                    >
-                        {/* First Tab */}
-                        <Tab eventKey="first" title="Kirish">
-                        <div className="form-group">
-                            <label htmlFor="phoneInput">Pochta / Telefon raqamingizni kiriting</label>
-                            <input type="text" className="form-control" id="phoneInput" placeholder="+998 xx xxx xx xx" maxLength={9} minLength={9} onChange={(e) => setPhone(e.target.value)} />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="passwordInput">Parolni kiriting</label>
-                            <input type="password" className="form-control" id="passwordInput" placeholder="********" onChange={(e) => setPassword(e.target.value)} />
-                            <div className="d-flex justify-content-center align-items-center form-group">
-                            <div className="form-check">
-                                <input type="checkbox" className="form-check-input" id="whoisCheck" checked={whois} onChange={handleCheckboxChange} />
-                                <label className="form-check-label" htmlFor="whoisCheck">
-                                    Yuridik shaxsman
-                                </label>
-                            </div>
-
-                            <button type="button" className="forgot-pass btn btn-link" onClick={handleShow}>
-                                Akkauntim bor
-                            </button>
-                        </div>
-                        </div>
-                        </Tab>
-
-        {/* Second Tab */}
-        <Tab eventKey="second" title="Kalit orqali kirish">
-        <div className="form-group">
-                            <label htmlFor="repeatPasswordInput">Kalitni kiriting</label>
-                            <input type="password" className="form-control" id="repeatPasswordInput" placeholder="ЭЦП" onChange={(e) => setRepeatPassword(e.target.value)} />
-                        </div>
-                  </Tab>
-                </Tabs>
-      <div className="form-group">
-                            <button type="submit" className="btn btn-primary">
-                                RO’YXATDAN O’TISH
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-                    
                 </main>
 
                 <Modal className="py-4 sigNmodal" show={show} onHide={handleClose} backdrop="static" keyboard={false} centered>
@@ -247,7 +200,9 @@ const Auth = observer(() => {
                             <span onClick={handleClose}>
                                 {t("General:Auth:notRegister")} <Link to="/registration">{t("General:Auth:register")}</Link>
                             </span>
-                            <button className="closeBtn btn " onClick={handleClose}>X</button>
+                            <button className="closeBtn btn " onClick={handleClose}>
+                                X
+                            </button>
                         </div>
                     </Modal.Header>
                     <Modal.Body>
@@ -265,18 +220,7 @@ const Auth = observer(() => {
                     </Modal.Body>
                 </Modal>
 
-                <ToastContainer
-                    position="bottom-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="light"
-                />
+                <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
             </div>
         </>
     );
